@@ -1,4 +1,5 @@
 import {CX,CY,OUTER} from './maze.js';
+import {GARDEN_FLOWERS,GARDEN_WINGS} from './fish-maze.js';
 export function drawSnail(svg,make,draw){
 svg.innerHTML=`<defs><linearGradient id="body" x2="0.5" y2="1"><stop stop-color="#fff0b3"/><stop offset="1" stop-color="#f4dc87"/></linearGradient><linearGradient id="leaf" x2="1" y2="1"><stop stop-color="#bbce9b"/><stop offset="1" stop-color="#92b681"/></linearGradient></defs>`;
 // A quiet botanical setting keeps the playable shell easy to read.
@@ -112,4 +113,30 @@ export function drawFamily(svg,make,draw){
  make('ellipse',{cx:1032,cy:479,rx:10,ry:5.5,fill:'#e5b4a0',opacity:.7});
  for(const [x,y] of [[136,641],[711,706],[1124,687]])draw(`M ${x} ${y} Q ${x-22} ${y-26} ${x-13} ${y-39} Q ${x+4} ${y-29} ${x+2} ${y-9} Q ${x+10} ${y-33} ${x+25} ${y-31} Q ${x+27} ${y-9} ${x+9} ${y+1} Z`,'#afc493','none');
  for(const [x,y] of [[139,193],[1061,264]]){make('circle',{cx:x,cy:y,r:5,fill:'#e0c78c'});draw(`M ${x-9} ${y-6} Q ${x-24} ${y-20} ${x-26} ${y-3} M ${x+9} ${y-6} Q ${x+24} ${y-20} ${x+26} ${y-3}`,'none','#c4cda9',3);}
+}
+export function drawGarden(svg,make,draw){
+ svg.innerHTML='<defs><linearGradient id="garden-leaf" x2=".3" y2="1"><stop stop-color="#e2eccd"/><stop offset="1" stop-color="#c2d8be"/></linearGradient></defs>';
+ make('ellipse',{cx:645,cy:711,rx:493,ry:17,fill:'#edf1e3'});
+ draw('M 300 430 L 340 430 L 340 665 L 300 665 Z','url(#garden-leaf)','#a4b38e',4);
+ draw('M 955 500 L 995 500 L 995 665 L 955 665 Z','url(#garden-leaf)','#a4b38e',4);
+ draw('M 302 553 Q 405 440 592 447 L 650 515 Q 527 614 365 608 Z','url(#garden-leaf)','#a4b38e',4);
+ draw('M 680 500 Q 825 468 988 563 L 966 660 Q 831 628 710 575 Z','url(#garden-leaf)','#a4b38e',4);
+ for(const flower of GARDEN_FLOWERS){
+  for(const [cx,cy,rx,ry] of flower.petals)make('ellipse',{cx,cy,rx:rx+6,ry:ry+6,fill:flower.region==='pink'?'#efd3d4':'#f2dfa1',stroke:flower.region==='pink'?'#bd999d':'#bfa96b','stroke-width':4});
+  make('circle',{cx:flower.cx,cy:flower.cy,r:33,fill:'#fff0bd',stroke:'#c9b17a','stroke-width':3});
+  make('circle',{cx:flower.cx-11,cy:flower.cy-5,r:3.6,fill:'#66543e'});make('circle',{cx:flower.cx+11,cy:flower.cy-5,r:3.6,fill:'#66543e'});
+  draw(`M ${flower.cx-9} ${flower.cy+8} Q ${flower.cx} ${flower.cy+19} ${flower.cx+9} ${flower.cy+8}`,'none','#a08b63',2.8);
+  for(const dx of [-20,20])make('ellipse',{cx:flower.cx+dx,cy:flower.cy+7,rx:6,ry:3.5,fill:'#e4b69c',opacity:.7});
+ }
+ for(const [cx,cy,rx,ry] of GARDEN_WINGS)make('ellipse',{cx,cy,rx:rx+7,ry:ry+7,fill:'#e1d3ec',stroke:'#a894b5','stroke-width':4});
+ draw('M 648 169 Q 670 153 692 169 L 692 463 Q 670 490 648 463 Z','#e6d6ac','#b8a67d',4);
+ make('circle',{cx:670,cy:139,r:33,fill:'#f5e9c7',stroke:'#b8a67d','stroke-width':4});
+ draw('M 657 108 Q 645 73 629 88 M 683 108 Q 694 73 710 88','none','#b8a67d',3.5);
+ make('circle',{cx:659,cy:135,r:4,fill:'#66543e'});make('circle',{cx:681,cy:135,r:4,fill:'#66543e'});
+ draw('M 661 147 Q 670 157 679 147','none','#a08b63',2.7);
+ for(const [x,y] of [[178,628],[1067,664]])draw(`M ${x} ${y} Q ${x-24} ${y-21} ${x-17} ${y-39} Q ${x+3} ${y-32} ${x+3} ${y-9} Q ${x+14} ${y-34} ${x+29} ${y-29} Q ${x+28} ${y-6} ${x+9} ${y+2} Z`,'#b4c99d','none');
+ for(const [x,y] of [[125,211],[1094,283],[480,122]]){
+  make('circle',{cx:x,cy:y,r:5,fill:'#e2ca91'});
+  draw(`M ${x-11} ${y-5} Q ${x-25} ${y-20} ${x-29} ${y-5} M ${x+11} ${y-5} Q ${x+25} ${y-20} ${x+29} ${y-5}`,'none','#c5d1b5',3);
+ }
 }

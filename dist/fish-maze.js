@@ -4,6 +4,22 @@ export const CELL=18, ORIGIN={x:100,y:100};
 const WIDTH=33,HEIGHT=25;
 const tail=[[530,304],[685,215],[685,425],[530,336]];
 function inPolygon(x,y,polygon){let inside=false;for(let i=0,j=polygon.length-1;i<polygon.length;j=i++){const [xi,yi]=polygon[i],[xj,yj]=polygon[j];if((yi>y)!==(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi)+xi)inside=!inside}return inside}
+const ellipseContains=(x,y,[cx,cy,rx,ry])=>((x-cx)/rx)**2+((y-cy)/ry)**2<=1;
+export const GARDEN_FLOWERS=[
+ {region:'pink',cx:320,cy:335,petals:[[320,240,65,80],[405,295,65,75],[375,405,65,75],[265,405,65,75],[235,295,65,75],[320,335,75,75]]},
+ {region:'yellow',cx:975,cy:480,petals:[[975,400,60,65],[1050,450,65,65],[1020,540,60,65],[930,540,60,65],[900,450,65,65],[975,480,75,75]]}
+];
+export const GARDEN_WINGS=[[580,280,85,105],[760,280,85,105],[590,430,75,85],[750,430,75,85]];
+const GARDEN_LEAVES=[[[310,550],[425,465],[590,455],[640,515],[505,595],[365,600]],[[690,500],[820,490],[980,565],[960,650],[830,620],[715,570]]];
+function gardenRegion(x,y){
+ for(const flower of GARDEN_FLOWERS)if(flower.petals.some(p=>ellipseContains(x,y,p)))return flower.region;
+ if(GARDEN_WINGS.some(p=>ellipseContains(x,y,p))||(x>=650&&x<=690&&y>=240&&y<=470))return 'butterfly';
+ return 'leaf';
+}
+function gardenContains(x,y){
+ if(GARDEN_FLOWERS.some(f=>Math.hypot(x-f.cx,y-f.cy)<42))return false;
+ return GARDEN_FLOWERS.some(f=>f.petals.some(p=>ellipseContains(x,y,p)))||GARDEN_WINGS.some(p=>ellipseContains(x,y,p))||(x>=650&&x<=690&&y>=240&&y<=470)||(x>=300&&x<=340&&y>=430&&y<=665)||(x>=955&&x<=995&&y>=530&&y<=665)||GARDEN_LEAVES.some(p=>inPolygon(x,y,p));
+}
 export function fishCenter(c){return {x:ORIGIN.x+(c.col+.5)*CELL,y:ORIGIN.y+(c.row+.5)*CELL}}
 const SHAPES={
  fish:{contains:(x,y)=>((x-335)/224)**2+((y-320)/160)**2<=1||inPolygon(x,y,tail),startY:320,goalY:400},
@@ -11,7 +27,8 @@ const SHAPES={
  rocket:{contains:(x,y)=>(x>=220&&x<=540&&y>=205&&y<=490)||inPolygon(x,y,[[220,205],[380,158],[540,205]])||inPolygon(x,y,[[235,330],[130,510],[240,470]])||inPolygon(x,y,[[525,330],[630,510],[520,470]]),startY:450,goalY:450},
  family:{width:57,height:35,startY:435,goalY:590,
   contains:(x,y)=>((x-420)/250)**2+((y-440)/180)**2<=1||(x>=250&&x<=370&&y>=238&&y<=425)||inPolygon(x,y,[[580,410],[678,235],[734,270],[702,469],[610,535]])||((x-815)/106)**2+((y-490)/95)**2<=1||((x-1005)/89)**2+((y-592)/79)**2<=1||inPolygon(x,y,[[495,552],[742,510],[884,548],[1028,585],[1082,657],[884,682],[647,646],[432,626]]),
-  region:(x,y)=>((x-1005)/89)**2+((y-592)/79)**2<=1?'chick':((x-815)/106)**2+((y-490)/95)**2<=1?'chick':x>650&&y>540?'grass':'hen'}
+  region:(x,y)=>((x-1005)/89)**2+((y-592)/79)**2<=1?'chick':((x-815)/106)**2+((y-490)/95)**2<=1?'chick':x>650&&y>540?'grass':'hen'},
+ garden:{width:57,height:35,startY:310,goalY:460,contains:gardenContains,region:gardenRegion}
 };
 export function createGridMaze(shape='fish',seed=1){
  const profile=SHAPES[shape];if(!profile)throw Error(`Unknown maze shape: ${shape}`);
