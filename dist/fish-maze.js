@@ -20,6 +20,14 @@ function gardenContains(x,y){
  if(GARDEN_FLOWERS.some(f=>Math.hypot(x-f.cx,y-f.cy)<42))return false;
  return GARDEN_FLOWERS.some(f=>f.petals.some(p=>ellipseContains(x,y,p)))||GARDEN_WINGS.some(p=>ellipseContains(x,y,p))||(x>=650&&x<=690&&y>=240&&y<=470)||(x>=300&&x<=340&&y>=430&&y<=665)||(x>=955&&x<=995&&y>=530&&y<=665)||GARDEN_LEAVES.some(p=>inPolygon(x,y,p));
 }
+function seaContains(x,y){
+ if(!ellipseContains(x,y,[610,400,505,275]))return false;
+ // Keep animals clear of both paths and walls, with room for their outlines.
+ const whale=ellipseContains(x,y,[350,345,184,108])||ellipseContains(x,y,[545,340,96,84]);
+ const fish=ellipseContains(x,y,[848,267,107,71])||inPolygon(x,y,[[922,247],[1016,205],[1016,327],[922,287]]);
+ const turtle=ellipseContains(x,y,[890,535,147,85]);
+ return !whale&&!fish&&!turtle;
+}
 export function fishCenter(c){return {x:ORIGIN.x+(c.col+.5)*CELL,y:ORIGIN.y+(c.row+.5)*CELL}}
 const SHAPES={
  fish:{contains:(x,y)=>((x-335)/224)**2+((y-320)/160)**2<=1||inPolygon(x,y,tail),startY:320,goalY:400},
@@ -28,7 +36,8 @@ const SHAPES={
  family:{width:57,height:35,startY:435,goalY:590,
   contains:(x,y)=>((x-420)/250)**2+((y-440)/180)**2<=1||(x>=250&&x<=370&&y>=238&&y<=425)||inPolygon(x,y,[[580,410],[678,235],[734,270],[702,469],[610,535]])||((x-815)/106)**2+((y-490)/95)**2<=1||((x-1005)/89)**2+((y-592)/79)**2<=1||inPolygon(x,y,[[495,552],[742,510],[884,548],[1028,585],[1082,657],[884,682],[647,646],[432,626]]),
   region:(x,y)=>((x-1005)/89)**2+((y-592)/79)**2<=1?'chick':((x-815)/106)**2+((y-490)/95)**2<=1?'chick':x>650&&y>540?'grass':'hen'},
- garden:{width:57,height:35,startY:310,goalY:460,contains:gardenContains,region:gardenRegion}
+ garden:{width:57,height:35,startY:310,goalY:460,contains:gardenContains,region:gardenRegion},
+ sea:{width:57,height:35,startY:400,goalY:400,contains:seaContains,region:()=> 'sea'}
 };
 export function createGridMaze(shape='fish',seed=1){
  const profile=SHAPES[shape];if(!profile)throw Error(`Unknown maze shape: ${shape}`);

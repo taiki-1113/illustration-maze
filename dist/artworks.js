@@ -124,19 +124,45 @@ export function drawGarden(svg,make,draw){
  for(const flower of GARDEN_FLOWERS){
   for(const [cx,cy,rx,ry] of flower.petals)make('ellipse',{cx,cy,rx:rx+6,ry:ry+6,fill:flower.region==='pink'?'#efd3d4':'#f2dfa1',stroke:flower.region==='pink'?'#bd999d':'#bfa96b','stroke-width':4});
   make('circle',{cx:flower.cx,cy:flower.cy,r:33,fill:'#fff0bd',stroke:'#c9b17a','stroke-width':3});
-  make('circle',{cx:flower.cx-11,cy:flower.cy-5,r:3.6,fill:'#66543e'});make('circle',{cx:flower.cx+11,cy:flower.cy-5,r:3.6,fill:'#66543e'});
-  draw(`M ${flower.cx-9} ${flower.cy+8} Q ${flower.cx} ${flower.cy+19} ${flower.cx+9} ${flower.cy+8}`,'none','#a08b63',2.8);
-  for(const dx of [-20,20])make('ellipse',{cx:flower.cx+dx,cy:flower.cy+7,rx:6,ry:3.5,fill:'#e4b69c',opacity:.7});
+  for(const [dx,dy] of [[0,0],[-11,-7],[10,-8],[-12,8],[11,9],[0,15],[0,-17]])make('circle',{cx:flower.cx+dx,cy:flower.cy+dy,r:2.5,fill:'#c8a969'});
  }
  for(const [cx,cy,rx,ry] of GARDEN_WINGS)make('ellipse',{cx,cy,rx:rx+7,ry:ry+7,fill:'#e1d3ec',stroke:'#a894b5','stroke-width':4});
- draw('M 648 169 Q 670 153 692 169 L 692 463 Q 670 490 648 463 Z','#e6d6ac','#b8a67d',4);
- make('circle',{cx:670,cy:139,r:33,fill:'#f5e9c7',stroke:'#b8a67d','stroke-width':4});
- draw('M 657 108 Q 645 73 629 88 M 683 108 Q 694 73 710 88','none','#b8a67d',3.5);
- make('circle',{cx:659,cy:135,r:4,fill:'#66543e'});make('circle',{cx:681,cy:135,r:4,fill:'#66543e'});
- draw('M 661 147 Q 670 157 679 147','none','#a08b63',2.7);
+ draw('M 662 200 Q 670 191 678 200 L 678 247 L 662 247 Z','#b5a27f','none');
+ make('ellipse',{cx:670,cy:188,rx:12,ry:16,fill:'#b5a27f'});
+ draw('M 664 176 Q 654 151 642 155 M 676 176 Q 686 151 698 155','none','#a59579',3);
  for(const [x,y] of [[178,628],[1067,664]])draw(`M ${x} ${y} Q ${x-24} ${y-21} ${x-17} ${y-39} Q ${x+3} ${y-32} ${x+3} ${y-9} Q ${x+14} ${y-34} ${x+29} ${y-29} Q ${x+28} ${y-6} ${x+9} ${y+2} Z`,'#b4c99d','none');
  for(const [x,y] of [[125,211],[1094,283],[480,122]]){
   make('circle',{cx:x,cy:y,r:5,fill:'#e2ca91'});
   draw(`M ${x-11} ${y-5} Q ${x-25} ${y-20} ${x-29} ${y-5} M ${x+11} ${y-5} Q ${x+25} ${y-20} ${x+29} ${y-5}`,'none','#c5d1b5',3);
  }
+}
+export function drawSea(svg,make,draw){
+ svg.innerHTML='<defs><linearGradient id="sea-water" x2=".1" y2="1"><stop stop-color="#e5f1f4"/><stop offset="1" stop-color="#d3e9ed"/></linearGradient></defs>';
+ make('ellipse',{cx:615,cy:718,rx:500,ry:17,fill:'#f1eddf'});
+ make('ellipse',{cx:610,cy:400,rx:513,ry:283,fill:'url(#sea-water)'});
+ // Animals occupy reserved holes in the maze; paths run through the water.
+ draw('M 477 354 C 513 348 514 309 538 300 Q 561 299 554 335 Q 580 308 599 316 Q 608 337 575 360 L 491 382 Z','#9bc8d1','#6c98a4',3.5);
+ make('ellipse',{cx:340,cy:345,rx:158,ry:85,fill:'#a4ced8',stroke:'#6c98a4','stroke-width':3.5});
+ draw('M 196 366 Q 320 422 480 365 Q 450 414 340 422 Q 223 416 196 366 Z','#e3f0f2','none');
+ draw('M 360 365 Q 363 405 398 414 Q 422 405 422 373 Z','#96bfcb','#6c98a4',3);
+ make('circle',{cx:245,cy:322,r:5,fill:'#456574'});make('circle',{cx:243.5,cy:320.5,r:1.5,fill:'#f9ffff'});
+ draw('M 207 348 Q 222 360 238 349','none','#6c98a4',3);
+ // Fish: an uninterrupted body, a small eye, and a separate tail.
+ draw('M 927 253 L 993 226 Q 982 266 993 307 L 927 281 Z','#edc0a2','#bc9a80',3.5);
+ make('ellipse',{cx:848,cy:267,rx:85,ry:49,fill:'#efd0b4',stroke:'#bc9a80','stroke-width':3.5});
+ draw('M 855 279 Q 869 302 893 286 L 881 275 Z','#e2b797','#bc9a80',2.5);
+ draw('M 823 247 Q 812 266 824 285','none','#c7a68b',2.5);make('circle',{cx:794,cy:256,r:4,fill:'#665b51'});
+ // Turtle: a low, rounded shell and short flippers.
+ draw('M 811 504 Q 791 489 804 479 Q 823 478 839 498 M 920 501 Q 946 478 954 492 Q 953 506 935 517 M 823 571 Q 804 585 823 595 Q 838 594 848 579 M 920 570 Q 940 586 950 575 Q 948 561 934 555','none','#adc7a4',15);
+ draw('M 795 543 L 771 551 L 797 557 Z','#b6cfac','#859f7e',2.5);
+ make('ellipse',{cx:980,cy:520,rx:30,ry:24,fill:'#c9dab9',stroke:'#859f7e','stroke-width':3});
+ make('ellipse',{cx:870,cy:535,rx:83,ry:56,fill:'#bad0b1',stroke:'#859f7e','stroke-width':3.5});
+ draw('M 851 505 L 888 505 L 910 535 L 888 565 L 851 565 L 830 535 Z M 851 505 L 834 488 M 888 505 L 904 490 M 910 535 L 950 535 M 888 565 L 904 581 M 851 565 L 834 581 M 830 535 L 789 535','none','#96b08d',2.5);
+ make('circle',{cx:991,cy:512,r:3,fill:'#50654d'});draw('M 988 526 Q 995 531 1001 526','none','#859f7e',2);
+ // Quiet seabed details stay outside the playable water.
+ for(const [x,y] of [[214,669],[1084,658]]){
+  draw(`M ${x} ${y} L ${x} ${y-40} M ${x} ${y-15} Q ${x-23} ${y-18} ${x-22} ${y-37} M ${x} ${y-27} Q ${x+20} ${y-30} ${x+20} ${y-48}`,'none','#d5b6a2',8);
+ }
+ draw('M 286 689 Q 269 667 275 649 Q 296 657 294 678 Q 303 650 316 650 Q 317 674 303 692 M 1026 683 Q 1005 661 1016 641 Q 1036 654 1033 675','#b6cdbd','none');
+ for(const [x,y,r] of [[212,209,9],[190,184,5],[1026,159,7]])make('circle',{cx:x,cy:y,r,fill:'none',stroke:'#c0d9df','stroke-width':3});
 }
