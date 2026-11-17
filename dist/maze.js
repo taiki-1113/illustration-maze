@@ -1,13 +1,13 @@
 export const TAU=Math.PI*2, CX=435,CY=302,INNER=53,STEP=37,COUNTS=[8,16,16,32,32],OUTER=INNER+STEP*COUNTS.length;
 export function point(r,a){return {x:CX+r*Math.cos(a),y:CY+r*Math.sin(a)}}
 export function center(c){return point(INNER+(c.r+.5)*STEP,(c.s+.5)*TAU/COUNTS[c.r])}
-export function createMaze(seed=6){
+export function createMaze(seed=6,branchiness=0){
  let state=seed;const random=()=>{state=(Math.imul(state,1664525)+1013904223)>>>0;return state/4294967296};
  const cells=[],rings=COUNTS.map((n,r)=>Array.from({length:n},(_,s)=>{const c={id:cells.length,r,s,neighbors:[],links:[]};cells.push(c);return c}));
  const connect=(a,b)=>{if(!a.neighbors.includes(b.id))a.neighbors.push(b.id);if(!b.neighbors.includes(a.id))b.neighbors.push(a.id)};
  for(const ring of rings)for(const c of ring){connect(c,ring[(c.s+1)%ring.length]);if(c.r>0)connect(c,rings[c.r-1][Math.floor(c.s*COUNTS[c.r-1]/ring.length)]);}
  const start=rings.at(-1)[12],goal=rings.at(-1)[0],visited=new Set([start.id]),stack=[start];
- while(stack.length){const c=stack.at(-1),options=c.neighbors.filter(id=>!visited.has(id));if(!options.length){stack.pop();continue}const n=cells[options[Math.floor(random()*options.length)]];c.links.push(n.id);n.links.push(c.id);visited.add(n.id);stack.push(n)}
+ while(stack.length){const index=branchiness>0&&random()<branchiness?Math.floor(random()*stack.length):stack.length-1;const c=stack[index],options=c.neighbors.filter(id=>!visited.has(id));if(!options.length){stack.splice(index,1);continue}const n=cells[options[Math.floor(random()*options.length)]];c.links.push(n.id);n.links.push(c.id);visited.add(n.id);stack.push(n)}
  const parents=new Map([[start.id,null]]),queue=[start.id];for(let k=0;k<queue.length;k++)for(const n of cells[queue[k]].links)if(!parents.has(n)){parents.set(n,queue[k]);queue.push(n)}
  const solution=[];for(let id=goal.id;id!==null;id=parents.get(id))solution.unshift(id);
  const walls=[];const arc=(r,a,b)=>{const pts=[];for(let i=0;i<=Math.ceil((b-a)*r/4);i++)pts.push(point(r,a+(b-a)*i/Math.ceil((b-a)*r/4)));walls.push(pts)};
