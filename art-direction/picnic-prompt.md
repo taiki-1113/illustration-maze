@@ -1,0 +1,11 @@
+# ピクニック挿絵の制作記録
+
+制作方式：組み込み image_gen ツール（CLI・APIキー不使用）で新規生成。
+
+プロジェクト内の画像：`dist/assets/picnic-gouache.png`
+
+迷路は画像に含めず、別途プログラムで生成・描画しています。
+
+## 最終プロンプト
+
+Use case: illustration-story. Asset type: polished background artwork for a children's picnic maze game, landscape 3:2 composition (1200 x 800 coordinates). Create an original beautifully hand-painted gouache and watercolor editorial illustration on warm ivory paper: a refined cozy outdoor snack picnic viewed directly from above, attractive to children without any faces or characters. Art direction: tactile paper grain, delicately irregular pencil contours, convincing woven wicker and linen, rich but restrained warm colors: butter yellow, strawberry coral, muted sage, honey brown; subtle painted shadows, excellent confident illustration, no flat vector clipart or icons. Composition is functional: a large unwrinkled ivory linen picnic cloth occupies x=150..1050, y=200..650. Its central rectangle x=185..1025, y=235..615 MUST be completely empty, nearly white ivory, with only extremely faint linen texture, no marks, no objects, no patterned stripes; a real maze will be drawn there in code. Keep the cloth axis aligned, top down, gently rounded corners, a fine hand-stitched hem near its outer edges. Around the OUTSIDE of that empty central rectangle, lovingly paint a small wicker basket with a golden croissant at upper left (x80..300, y40..220), a few fresh strawberries with tiny seeds at upper middle (x450..620, y50..190), a clear glass bottle of pale lemonade and gingham ribbon at upper right (x925..1100,y35..210), a ceramic plate of handmade butter biscuits at lower right (x915..1120,y635..770), and a small apple with a leaf and folded sage napkin at lower left (x85..280,y650..780). Food is beautifully observed but softly illustrated, warm inviting natural shapes, never anthropomorphic. Sparse small leaves and watercolor grass outside the cloth tie it together; generous breathing room. Maintain a harmonious coherent illustration, beautiful enough for a published children's activity book. ABSOLUTELY NO text, letters, numbers, logos, watermark, maze, routes, grid, symbols or game controls anywhere. The blank central cloth is a strict protected negative-space zone.

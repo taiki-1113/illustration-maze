@@ -166,3 +166,7 @@ export function drawSea(svg,make,draw){
  draw('M 286 689 Q 269 667 275 649 Q 296 657 294 678 Q 303 650 316 650 Q 317 674 303 692 M 1026 683 Q 1005 661 1016 641 Q 1036 654 1033 675','#b6cdbd','none');
  for(const [x,y,r] of [[212,209,9],[190,184,5],[1026,159,7]])make('circle',{cx:x,cy:y,r,fill:'none',stroke:'#c0d9df','stroke-width':3});
 }
+export function drawPicnic(svg,make){
+ svg.innerHTML='';
+ make('image',{href:'./assets/picnic-gouache.png',x:0,y:0,width:1200,height:800,preserveAspectRatio:'xMidYMid meet'},svg);
+}

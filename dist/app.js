@@ -1,8 +1,8 @@
 import {createMaze,center as polarCenter,point,cellAt as polarCellAt,isWalkable as polarWalkable,edgePoints as polarEdgePoints,TAU,CX,CY,OUTER,COUNTS} from './maze.js';
 import {createGridMaze,fishCenter,fishCellAt,fishWalkable,fishEdgePoints} from './fish-maze.js';
-import {drawSnail,drawTurtle,drawFish,drawOwl,drawRocket,drawFamily,drawGarden,drawSea} from './artworks.js';
+import {drawSnail,drawTurtle,drawFish,drawOwl,drawRocket,drawFamily,drawGarden,drawSea,drawPicnic} from './artworks.js';
 const $=s=>document.querySelector(s),svg=$('#maze'),NS='http://www.w3.org/2000/svg';
-const works=[{id:'snail',name:'かたつむり',seed:6,branchiness:0,color:'#d4a25c',trail:'#e9ad64'},{id:'turtle',name:'かめ',seed:2,branchiness:.2,color:'#7ba882',trail:'#90b99a'},{id:'fish',name:'さかな',seed:1,grid:true,color:'#669ca8',trail:'#91c6d0',border:'#89b8bf'},{id:'owl',name:'ふくろう',seed:24,grid:true,color:'#b08f64',trail:'#d7ba88',border:'#bca587'},{id:'rocket',name:'ロケット',seed:20,grid:true,color:'#bb817d',trail:'#e8b09c',border:'#ba9793'},{id:'family',name:'にわとりとひよこ',title:'にわとりと ひよこ',seed:1,grid:true,wide:true,color:'#a88e56',trail:'#d9b978',border:'#baa879'},{id:'garden',name:'はなばたけ',title:'ちょうちょと おはな',seed:1,grid:true,wide:true,color:'#a48caa',trail:'#cfafce',border:'#a9b590'},{id:'sea',name:'うみのなかま',title:'うみの なかまたち',seed:3,grid:true,wide:true,color:'#7babb5',trail:'#91c6ce',border:'#9bbec6',wallColor:'#586c73'}];
+const works=[{id:'snail',name:'かたつむり',seed:6,branchiness:0,color:'#d4a25c',trail:'#e9ad64'},{id:'turtle',name:'かめ',seed:2,branchiness:.2,color:'#7ba882',trail:'#90b99a'},{id:'fish',name:'さかな',seed:1,grid:true,color:'#669ca8',trail:'#91c6d0',border:'#89b8bf'},{id:'owl',name:'ふくろう',seed:24,grid:true,color:'#b08f64',trail:'#d7ba88',border:'#bca587'},{id:'rocket',name:'ロケット',seed:20,grid:true,color:'#bb817d',trail:'#e8b09c',border:'#ba9793'},{id:'family',name:'にわとりとひよこ',title:'にわとりと ひよこ',seed:1,grid:true,wide:true,color:'#a88e56',trail:'#d9b978',border:'#baa879'},{id:'garden',name:'はなばたけ',title:'ちょうちょと おはな',seed:1,grid:true,wide:true,color:'#a48caa',trail:'#cfafce',border:'#a9b590'},{id:'sea',name:'うみのなかま',title:'うみの なかまたち',seed:3,grid:true,wide:true,color:'#7babb5',trail:'#91c6ce',border:'#9bbec6',wallColor:'#586c73'},{id:'picnic',name:'おやつのピクニック',title:'おやつの ピクニック',seed:8,grid:true,wide:true,surfaceImage:true,color:'#b47b5d',trail:'#deb088',border:'#bdad96',wallColor:'#786b5a'}];
 let work=works[0],maze,scene=svg,trail,tip,s,g;
 let points=[],current,active=false,started=false,complete=false,currentCell;
 const sessions=new Map();
@@ -30,7 +30,7 @@ function marker(c,label,color){if(work.grid){const p=center(c),left=c.id===maze.
 function buildArtwork(w){
  scene=svg;svg.setAttribute('viewBox',w.wide?'0 0 1200 800':'0 0 760 650');
  if(w.id==='snail')drawSnail(svg,make,draw);
- else if(w.grid){({fish:drawFish,owl:drawOwl,rocket:drawRocket,family:drawFamily,garden:drawGarden,sea:drawSea}[w.id])(svg,make,draw);for(const c of maze.cells){const p=fishCenter(c);make('rect',{x:p.x-9,y:p.y-9,width:18,height:18,fill:({chick:'#fff9dd',grass:'#f4f7e9',pink:'#fff3f2',yellow:'#fff9dc',butterfly:'#f7f1fc',leaf:'#f2f7e9',sea:'#f9fcfd'})[c.region]||'#fffdf5'})}}
+ else if(w.grid){({fish:drawFish,owl:drawOwl,rocket:drawRocket,family:drawFamily,garden:drawGarden,sea:drawSea,picnic:drawPicnic}[w.id])(svg,make,draw);if(!w.surfaceImage)for(const c of maze.cells){const p=fishCenter(c);make('rect',{x:p.x-9,y:p.y-9,width:18,height:18,fill:({chick:'#fff9dd',grass:'#f4f7e9',pink:'#fff3f2',yellow:'#fff9dc',butterfly:'#f7f1fc',leaf:'#f2f7e9',sea:'#f9fcfd'})[c.region]||'#fffdf5'})}}
  else {drawTurtle(svg,make,draw);scene=make('g',{transform:`translate(380 335) scale(1 .85) translate(${-CX} ${-CY})`},svg);make('circle',{cx:CX,cy:CY,r:OUTER,fill:'#fffdf5'});draw(`M ${CX-15} ${CY-12} L ${CX+7} ${CY-22} L ${CX+25} ${CY-5} L ${CX+17} ${CY+19} L ${CX-9} ${CY+24} L ${CX-25} ${CY+6} Z`,'#e6eedb','#b6c8a1',3);}
  const wallLayer=make('g',{'aria-hidden':'true'});
  if(w.id==='turtle')for(const wall of maze.walls)if(wall.every(p=>Math.abs(Math.hypot(p.x-CX,p.y-CY)-OUTER)<.01))draw(wall.map((p,i)=>`${i?'L':'M'} ${p.x} ${p.y}`).join(' '),'none','#9ab18a',12,wallLayer);
@@ -47,9 +47,9 @@ function selectWork(id,{remember=true}={}){
  work=works.find(w=>w.id===id)||works[0];maze=work.grid?createGridMaze(work.id,work.seed):createMaze(work.seed,work.branchiness);buildArtwork(work);
  const thumb=$(`#${work.id}-card svg`);if(!thumb.childNodes.length){thumb.setAttribute('viewBox',svg.getAttribute('viewBox'));thumb.innerHTML=svg.innerHTML;thumb.querySelectorAll('[id]').forEach(el=>{const old=el.id;el.id=`thumb-${work.id}-${old}`;for(const ref of thumb.querySelectorAll(`[fill="url(#${old})"]`))ref.setAttribute('fill',`url(#${el.id})`)})}
  $('#maze-title').textContent=work.title||`${work.name}の めいろ`;$('.heading .eyebrow span').textContent=String(works.indexOf(work)+1).padStart(2,'0');
- $('.heading .eyebrow').firstChild.textContent=work.id==='rocket'?'のりものの めいろ ':'いきものの めいろ ';document.title=`イラストめいろ｜${work.name}`;svg.setAttribute('aria-label',`${work.name}の迷路。左のスタートから右のゴールまで、道をなぞって進みます。`);
+ $('.heading .eyebrow').firstChild.textContent=work.id==='rocket'?'のりものの めいろ ':work.id==='picnic'?'おいしい めいろ ':'いきものの めいろ ';document.title=`イラストめいろ｜${work.name}`;svg.setAttribute('aria-label',`${work.name}の迷路。左のスタートから右のゴールまで、道をなぞって進みます。`);
  history.replaceState(null,'',`#${work.id}`);
- $('#success-message').innerHTML=`さいごまで たどりつけたね。<br>${work.id==='rocket'?'うちゅうへの ぼうけん、だいせいこう！':work.id==='family'?'おやこ みんなに あえたね！':work.id==='garden'?'おはなに たどりついたね！':work.id==='sea'?'うみの ぼうけん、だいせいこう！':work.name+'も うれしそう！'}`;
+ $('#success-message').innerHTML=`さいごまで たどりつけたね。<br>${work.id==='rocket'?'うちゅうへの ぼうけん、だいせいこう！':work.id==='family'?'おやこ みんなに あえたね！':work.id==='garden'?'おはなに たどりついたね！':work.id==='sea'?'うみの ぼうけん、だいせいこう！':work.id==='picnic'?'おやつの じかんに まにあったね！':work.name+'も うれしそう！'}`;
  const saved=sessions.get(work.id);if(saved){({points,current,currentCell,started,complete}=saved);active=false;render();$('#instruction').textContent=complete?'やったね！ ゴールに ついたよ！':started?'いろの ついた さきから つづけよう！':'スタートから ゆびで なぞってみよう！'}else reset();
  $('.zoom-hint').textContent=work.wide?'ひろい めいろは おおきくしてね':'こまかい みちは おおきくしてね';$('#zoom-controls').hidden=!work.grid;$('.board').classList.toggle('detailed',work.grid);setPan(false);setZoom(1);badges();
 }

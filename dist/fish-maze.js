@@ -37,7 +37,8 @@ const SHAPES={
   contains:(x,y)=>((x-420)/250)**2+((y-440)/180)**2<=1||(x>=250&&x<=370&&y>=238&&y<=425)||inPolygon(x,y,[[580,410],[678,235],[734,270],[702,469],[610,535]])||((x-815)/106)**2+((y-490)/95)**2<=1||((x-1005)/89)**2+((y-592)/79)**2<=1||inPolygon(x,y,[[495,552],[742,510],[884,548],[1028,585],[1082,657],[884,682],[647,646],[432,626]]),
   region:(x,y)=>((x-1005)/89)**2+((y-592)/79)**2<=1?'chick':((x-815)/106)**2+((y-490)/95)**2<=1?'chick':x>650&&y>540?'grass':'hen'},
  garden:{width:57,height:35,startY:310,goalY:460,contains:gardenContains,region:gardenRegion},
- sea:{width:57,height:35,startY:400,goalY:400,contains:seaContains,region:()=> 'sea'}
+ sea:{width:57,height:35,startY:400,goalY:400,contains:seaContains,region:()=> 'sea'},
+ picnic:{width:57,height:35,startY:415,goalY:415,contains:(x,y)=>x>=190&&x<=1018&&y>=244&&y<=604&&!ellipseContains(x,y,[1040,675,175,150])&&!ellipseContains(x,y,[150,650,100,110]),region:()=> 'linen'}
 };
 export function createGridMaze(shape='fish',seed=1){
  const profile=SHAPES[shape];if(!profile)throw Error(`Unknown maze shape: ${shape}`);
