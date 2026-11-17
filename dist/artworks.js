@@ -47,3 +47,37 @@ export function drawFish(svg,make,draw){
  draw('M 100 530 Q 86 510 90 494 Q 111 506 108 527 Q 114 510 128 511 Q 128 528 113 535','#b8ceac','none');
  draw('M 647 532 Q 645 501 660 493 Q 670 517 656 536 M 662 535 Q 669 517 682 518 Q 683 533 669 540','#b8ceac','none');
 }
+export function drawOwl(svg,make,draw){
+ svg.innerHTML='<defs><linearGradient id="owl-body" x2=".3" y2="1"><stop stop-color="#e9d7ba"/><stop offset="1" stop-color="#cbb28e"/></linearGradient></defs>';
+ make('ellipse',{cx:380,cy:580,rx:226,ry:13,fill:'#efeddf'});
+ draw('M 291 535 L 283 566 M 305 537 L 305 569 M 319 535 L 327 566 M 441 535 L 433 566 M 455 537 L 455 569 M 469 535 L 477 566','none','#b59662',8);
+ draw('M 235 282 L 137 437 Q 162 476 245 491 L 289 375 Z','url(#owl-body)','#978068',4);
+ draw('M 525 282 L 623 437 Q 598 476 515 491 L 471 375 Z','url(#owl-body)','#978068',4);
+ make('ellipse',{cx:380,cy:370,rx:211,ry:184,fill:'#d8c6aa'});
+ draw('M 253 157 Q 232 109 248 69 L 300 92 Q 380 62 460 92 L 512 69 Q 528 109 507 157 Q 509 222 452 237 L 308 237 Q 251 222 253 157 Z','url(#owl-body)','#978068',4);
+ for(const x of [326,434]){
+  make('ellipse',{cx:x,cy:145,rx:49,ry:54,fill:'#fff7e6'});
+  make('circle',{cx:x,cy:143,r:23,fill:'#4e4439'});
+  make('circle',{cx:x-7,cy:135,r:7,fill:'#fffdf5'});
+ }
+ draw('M 368 169 L 380 187 L 392 169 Z','#d8ad68','#aa864d',2.5);
+ make('ellipse',{cx:277,cy:175,rx:14,ry:7,fill:'#dda993',opacity:.65});make('ellipse',{cx:483,cy:175,rx:14,ry:7,fill:'#dda993',opacity:.65});
+ draw('M 116 516 Q 99 491 105 478 Q 125 489 122 510 Q 128 493 142 493 Q 142 515 126 522','#b9c7a1','none');
+ draw('M 632 548 Q 632 523 647 515 Q 655 537 641 551','#b9c7a1','none');
+ for(const [x,y] of [[160,148],[581,179],[610,118]])draw(`M ${x} ${y-7} L ${x+2} ${y-2} L ${x+7} ${y} L ${x+2} ${y+2} L ${x} ${y+7} L ${x-2} ${y+2} L ${x-7} ${y} L ${x-2} ${y-2} Z`,'#d8c79b','none');
+}
+export function drawRocket(svg,make,draw){
+ svg.innerHTML='<defs><linearGradient id="rocket-cap" x2=".3" y2="1"><stop stop-color="#eeb9ac"/><stop offset="1" stop-color="#dc9c91"/></linearGradient></defs>';
+ make('ellipse',{cx:380,cy:612,rx:193,ry:11,fill:'#f1ebdf'});
+ draw('M 317 485 Q 290 553 327 587 L 349 563 L 381 609 L 411 565 L 433 587 Q 471 548 443 485 Z','#f0c784','#d0a369',3);
+ draw('M 345 489 Q 334 538 380 572 Q 426 538 415 489 Z','#fff0b3','none');
+ draw('M 239 324 L 123 519 Q 191 531 251 479 Z','url(#rocket-cap)','#aa8078',4);
+ draw('M 521 324 L 637 519 Q 569 531 509 479 Z','url(#rocket-cap)','#aa8078',4);
+ draw('M 214 211 Q 246 121 380 51 Q 514 121 546 211 L 546 489 L 214 489 Z','#d5e5e6','#8aa6ac',4);
+ draw('M 214 211 Q 246 121 380 51 Q 514 121 546 211 L 499 199 Q 438 169 380 155 Q 322 169 261 199 Z','url(#rocket-cap)','#aa8078',4);
+ make('circle',{cx:380,cy:119,r:29,fill:'#f9f5e9',stroke:'#ae8580','stroke-width':4});
+ make('circle',{cx:380,cy:119,r:20,fill:'#c1dfe4',stroke:'#8caab2','stroke-width':2});
+ draw('M 369 111 Q 372 105 378 104','none','#f8ffff',4);
+ for(const [x,y,r] of [[138,143,8],[600,100,11],[650,285,6],[95,294,5]])draw(`M ${x} ${y-r} L ${x+3} ${y-3} L ${x+r} ${y} L ${x+3} ${y+3} L ${x} ${y+r} L ${x-3} ${y+3} L ${x-r} ${y} L ${x-3} ${y-3} Z`,'#ddc892','none');
+ make('circle',{cx:149,cy:238,r:4,fill:'#d0dfe0'});make('circle',{cx:613,cy:173,r:5,fill:'#d0dfe0'});
+}
