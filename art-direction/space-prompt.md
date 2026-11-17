@@ -1,0 +1,15 @@
+# 宇宙探検の挿絵
+
+組み込み image_gen で新規生成。迷路・壁・当たり判定・操作中のロケットはSVGで別途描画。
+生成画像の実際の天体位置に合わせて操作領域を調整し、地球・土星の環・月を通り抜けられない航路にしています。
+
+## 生成プロンプト
+
+Use case: illustration-story. Asset type: landscape 3:2 (1200 by 800 coordinate layout) original high-quality painted background for a children's space-navigation maze game. The functional composition MUST follow these coordinates because real interactive flight paths will be overlaid in code. Create a richly crafted gouache/watercolor children's science-book illustration on textured paper, a beautiful deep blue and indigo cosmos with sparse warm stars, delicately brushed distant nebulas, restrained teal and dusty gold, very fine illustrative detail and sophisticated lighting. NOT flat vector art, NOT clipart, NO faces on celestial bodies. Precisely place: (1) Earth centered at x300 y420, radius approximately 85, beautifully shaded blue oceans, sage continents, soft white clouds. (2) Saturn centered at x650 y270, sphere radius 60, elliptical rings total horizontal radius 115 and vertical radius 38, softly shaded sand and muted ochre bands. Keep the full Saturn including rings within ellipse x510..790,y188..352. (3) Moon centered at x970 y510 radius 59, pale warm ivory with carefully painted subtle craters. Leave a wide area of quiet dark-blue space around each planet; the code-drawn labyrinth will occupy overlapping orbital bands around these bodies. Do not draw any orbits, circles, pathways, labyrinths, grid, lines, trails or interface elements yourself. (4) A tiny beautifully painted cream-and-coral rocket at far left, centered near x65 y415, pointing horizontally right, with its nose ending near x100,y415, ready to depart from Earth; small blue window and metallic detail, restrained scale. (5) At far right, a compact finely painted moon-base docking outpost occupies x1132..1192,y465..530, small ivory domes, muted gold airlock and compact solar panel detail. Its left-facing docking entrance is at x1135,y505; it is the visual destination next to the moon. No other spacecraft or stations. The rest must be spacious and quiet so a luminous navigation maze can be overlaid in three broad interconnected orbital regions: around Earth inside ellipse cx300 cy420 rx210 ry180, around Saturn inside ellipse cx650 cy270 rx225 ry165, and around Moon inside ellipse cx970 cy510 rx150 ry150. These regions remain dark, nearly uniform navy behind sparse subtle paper texture. Keep decorative stars inside these path regions very sparse, tiny and dim, with all brighter stars out toward the margins. The three planets, rocket, and dock are functional anchors and must remain distinct and correctly located. This should look like a professionally published, warm and wondrous children's space adventure illustration. NO text, letters, numbers, logo, watermark, extra planets, cartoon faces, maze, route, arrow, orbit line, or UI.
+
+
+## 位置調整の画像編集
+
+上記の生成画像を参照し、天体・星雲・画風は保持したまま、ロケットを下に21単位移動、基地を右端へ縮小移動する指示で組み込み image_gen により編集しました。画像生成には位置の揺れがあるため、最終画像の実際の位置に合わせて迷路の非通行領域と出口を調整しています。
+
+最終の天体保護領域（中心x,y・半径x,y）: 地球(283,409,118,116)、土星と環(702,239,168,95)、月(965,490,80,80)。出発(109,415)、基地への出口(1099,487)。

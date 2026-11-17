@@ -170,3 +170,7 @@ export function drawPicnic(svg,make){
  svg.innerHTML='';
  make('image',{href:'./assets/picnic-gouache.png',x:0,y:0,width:1200,height:800,preserveAspectRatio:'xMidYMid meet'},svg);
 }
+export function drawSpace(svg,make){
+ svg.innerHTML='';
+ make('image',{href:'./assets/space-adventure.png',x:0,y:0,width:1200,height:800,preserveAspectRatio:'xMidYMid meet'},svg);
+}

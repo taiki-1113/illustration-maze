@@ -28,6 +28,10 @@ function seaContains(x,y){
  const turtle=ellipseContains(x,y,[890,535,147,85]);
  return !whale&&!fish&&!turtle;
 }
+// Match the painted bodies, including Saturn's rings, so the flight paths orbit them.
+export const SPACE_ORBITS=[[283,409,218,188],[700,239,245,185],[965,490,160,160]];
+export const SPACE_BODIES=[[283,409,118,116],[702,239,168,95],[965,490,80,80]];
+function spaceContains(x,y){return (SPACE_ORBITS.some(e=>ellipseContains(x,y,e))||inPolygon(x,y,[[423,330],[565,310],[570,387],[450,420]])||inPolygon(x,y,[[775,350],[865,350],[930,440],[860,510],[790,430]]))&&!SPACE_BODIES.some(e=>ellipseContains(x,y,e))&&!(x>1108&&y>=460&&y<=500)}
 export function fishCenter(c){return {x:ORIGIN.x+(c.col+.5)*CELL,y:ORIGIN.y+(c.row+.5)*CELL}}
 const SHAPES={
  fish:{contains:(x,y)=>((x-335)/224)**2+((y-320)/160)**2<=1||inPolygon(x,y,tail),startY:320,goalY:400},
@@ -38,7 +42,8 @@ const SHAPES={
   region:(x,y)=>((x-1005)/89)**2+((y-592)/79)**2<=1?'chick':((x-815)/106)**2+((y-490)/95)**2<=1?'chick':x>650&&y>540?'grass':'hen'},
  garden:{width:57,height:35,startY:310,goalY:460,contains:gardenContains,region:gardenRegion},
  sea:{width:57,height:35,startY:400,goalY:400,contains:seaContains,region:()=> 'sea'},
- picnic:{width:57,height:35,startY:415,goalY:415,contains:(x,y)=>x>=190&&x<=1018&&y>=244&&y<=604&&!ellipseContains(x,y,[1040,675,175,150])&&!ellipseContains(x,y,[150,650,100,110]),region:()=> 'linen'}
+ picnic:{width:57,height:35,startY:415,goalY:415,contains:(x,y)=>x>=190&&x<=1018&&y>=244&&y<=604&&!ellipseContains(x,y,[1040,675,175,150])&&!ellipseContains(x,y,[150,650,100,110]),region:()=> 'linen'},
+ space:{width:57,height:35,startY:420,goalPoint:{x:1099,y:487},contains:spaceContains,region:(x)=>x<470?'earth-orbit':x<820?'saturn-orbit':'moon-orbit'}
 };
 export function createGridMaze(shape='fish',seed=1){
  const profile=SHAPES[shape];if(!profile)throw Error(`Unknown maze shape: ${shape}`);
@@ -52,7 +57,7 @@ export function createGridMaze(shape='fish',seed=1){
  }
  for(const c of cells)for(const [dc,dr] of [[1,0],[0,1],[-1,0],[0,-1]]){const n=lookup.get(`${c.col+dc},${c.row+dr}`);if(n)c.neighbors.push(n.id)}
  const start=cells.reduce((a,c)=>{const pa=fishCenter(a),p=fishCenter(c);return p.x+Math.abs(p.y-profile.startY)*.3<pa.x+Math.abs(pa.y-profile.startY)*.3?c:a});
- const goal=cells.filter(c=>c.col===Math.max(...cells.map(c=>c.col))).reduce((a,c)=>Math.abs(fishCenter(c).y-profile.goalY)<Math.abs(fishCenter(a).y-profile.goalY)?c:a);
+ const goal=profile.goalPoint?cells.find(c=>{const p=fishCenter(c);return p.x===profile.goalPoint.x&&p.y===profile.goalPoint.y}):cells.filter(c=>c.col===Math.max(...cells.map(c=>c.col))).reduce((a,c)=>Math.abs(fishCenter(c).y-profile.goalY)<Math.abs(fishCenter(a).y-profile.goalY)?c:a);
  // Growing-tree generation mixes longer detours with branches along the route.
  const visited=new Set([start.id]),active=[start];
  while(active.length){const index=random()<.12?Math.floor(random()*active.length):active.length-1,c=active[index],options=c.neighbors.filter(id=>!visited.has(id));if(!options.length){active.splice(index,1);continue}const next=cells[options[Math.floor(random()*options.length)]];c.links.push(next.id);next.links.push(c.id);visited.add(next.id);active.push(next)}
