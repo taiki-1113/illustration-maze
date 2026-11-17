@@ -32,3 +32,18 @@ export function drawTurtle(svg,make,draw){
  draw('M 93 525 Q 76 501 84 488 Q 102 496 101 516 Q 105 493 121 493 Q 121 514 105 528','#b6ca98','none');
  draw('M 652 556 Q 637 537 645 524 Q 661 530 661 547 Q 665 530 678 531 Q 678 550 666 558','#b6ca98','none');
 }
+export function drawFish(svg,make,draw){
+ svg.innerHTML='<defs><linearGradient id="fish-blue" x2=".2" y2="1"><stop stop-color="#d4eced"/><stop offset="1" stop-color="#a9d2d8"/></linearGradient></defs>';
+ make('ellipse',{cx:386,cy:548,rx:276,ry:13,fill:'#eaf1ec'});
+ draw('M 255 181 Q 290 105 346 103 Q 367 125 386 175 Z','url(#fish-blue)','#719ca4',4);
+ draw('M 286 468 Q 318 527 370 513 L 396 464 Z','url(#fish-blue)','#719ca4',4);
+ draw('M 534 304 L 692 205 Q 678 317 692 436 L 534 336 Z','url(#fish-blue)','#719ca4',4);
+ make('ellipse',{cx:335,cy:320,rx:230,ry:165,fill:'#c2dfe1'});
+ draw('M 144 268 C 111 249 72 264 67 299 C 61 336 93 361 128 354 L 155 331 Z','url(#fish-blue)','#719ca4',4);
+ make('ellipse',{cx:91,cy:292,rx:5,ry:7,fill:'#493c2b'});
+ make('ellipse',{cx:83,cy:312,rx:10,ry:6,fill:'#e8b7a8',opacity:.8});
+ draw('M 78 327 Q 89 337 101 326','none','#493c2b',3);
+ for(const [x,y,r] of [[51,246,8],[65,218,5],[39,198,10]])make('circle',{cx:x,cy:y,r,fill:'none',stroke:'#c0dce0','stroke-width':3});
+ draw('M 100 530 Q 86 510 90 494 Q 111 506 108 527 Q 114 510 128 511 Q 128 528 113 535','#b8ceac','none');
+ draw('M 647 532 Q 645 501 660 493 Q 670 517 656 536 M 662 535 Q 669 517 682 518 Q 683 533 669 540','#b8ceac','none');
+}
