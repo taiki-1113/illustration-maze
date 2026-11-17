@@ -1,8 +1,8 @@
 import {createMaze,center as polarCenter,point,cellAt as polarCellAt,isWalkable as polarWalkable,edgePoints as polarEdgePoints,TAU,CX,CY,OUTER,COUNTS} from './maze.js';
 import {createGridMaze,fishCenter,fishCellAt,fishWalkable,fishEdgePoints} from './fish-maze.js';
-import {drawSnail,drawTurtle,drawFish,drawOwl,drawRocket} from './artworks.js';
+import {drawSnail,drawTurtle,drawFish,drawOwl,drawRocket,drawFamily} from './artworks.js';
 const $=s=>document.querySelector(s),svg=$('#maze'),NS='http://www.w3.org/2000/svg';
-const works=[{id:'snail',name:'かたつむり',seed:6,branchiness:0,color:'#d4a25c',trail:'#e9ad64'},{id:'turtle',name:'かめ',seed:2,branchiness:.2,color:'#7ba882',trail:'#90b99a'},{id:'fish',name:'さかな',seed:1,grid:true,color:'#669ca8',trail:'#91c6d0',border:'#89b8bf'},{id:'owl',name:'ふくろう',seed:24,grid:true,color:'#b08f64',trail:'#d7ba88',border:'#bca587'},{id:'rocket',name:'ロケット',seed:20,grid:true,color:'#bb817d',trail:'#e8b09c',border:'#ba9793'}];
+const works=[{id:'snail',name:'かたつむり',seed:6,branchiness:0,color:'#d4a25c',trail:'#e9ad64'},{id:'turtle',name:'かめ',seed:2,branchiness:.2,color:'#7ba882',trail:'#90b99a'},{id:'fish',name:'さかな',seed:1,grid:true,color:'#669ca8',trail:'#91c6d0',border:'#89b8bf'},{id:'owl',name:'ふくろう',seed:24,grid:true,color:'#b08f64',trail:'#d7ba88',border:'#bca587'},{id:'rocket',name:'ロケット',seed:20,grid:true,color:'#bb817d',trail:'#e8b09c',border:'#ba9793'},{id:'family',name:'にわとりとひよこ',title:'にわとりと ひよこ',seed:1,grid:true,wide:true,color:'#a88e56',trail:'#d9b978',border:'#baa879'}];
 let work=works[0],maze,scene=svg,trail,tip,s,g;
 let points=[],current,active=false,started=false,complete=false,currentCell;
 const sessions=new Map();
@@ -12,8 +12,8 @@ const isWalkable=(p,m)=>work.grid?fishWalkable(p,m):polarWalkable(p,m);
 const edgePoints=(a,b)=>work.grid?fishEdgePoints(a,b):polarEdgePoints(a,b);
 let zoom=1,panMode=false,panPointer=null;
 function setZoom(value){
- zoom=Math.max(1,Math.min(3,value));svg.style.width=`${zoom*100}%`;$('#zoom-level').textContent=`${Math.round(zoom*100)}%`;
- $('#zoom-out').disabled=zoom===1;$('#zoom-in').disabled=zoom===3;
+ zoom=Math.max(1,Math.min(work.wide?5:3,value));svg.style.width=`${zoom*100}%`;$('#zoom-level').textContent=`${Math.round(zoom*100)}%`;
+ $('#zoom-out').disabled=zoom===1;$('#zoom-in').disabled=zoom===(work.wide?5:3);
  const board=$('.board');board.classList.toggle('magnified',zoom>1);if(zoom===1){board.scrollLeft=0;board.scrollTop=0;return}if(current){const p=new DOMPoint(current.x,current.y).matrixTransform(scene.getScreenCTM());const r=board.getBoundingClientRect();board.scrollLeft+=p.x-r.x-r.width/2;board.scrollTop+=p.y-r.y-r.height/2}
 }
 function setPan(value){panMode=value;panPointer=null;svg.classList.toggle('pan-mode',value);$('#pan-mode').setAttribute('aria-pressed',String(value));$('#pan-mode').textContent=value?'✎ なぞる にもどる':'✥ えを うごかす';active=false;}
@@ -28,9 +28,9 @@ function badges(){
 }
 function marker(c,label,color){if(work.grid){const p=center(c),left=c.id===maze.start.id;const t=make('text',{x:p.x+(left?-13:13),y:p.y+(left?29:27),'text-anchor':left?'end':'start',fill:color,'font-size':16,'font-weight':900});t.textContent=label;return p}const a=(c.s+.5)*TAU/COUNTS[c.r],p=point(OUTER+35,a),inside=center(c);make('circle',{cx:inside.x,cy:inside.y,r:12,fill:color,opacity:.17});const text=make('text',{x:p.x,y:p.y+5,'text-anchor':'middle',fill:color,'font-size':16,'font-weight':900});text.textContent=label;return p}
 function buildArtwork(w){
- scene=svg;
+ scene=svg;svg.setAttribute('viewBox',w.wide?'0 0 1200 800':'0 0 760 650');
  if(w.id==='snail')drawSnail(svg,make,draw);
- else if(w.grid){({fish:drawFish,owl:drawOwl,rocket:drawRocket}[w.id])(svg,make,draw);for(const c of maze.cells){const p=fishCenter(c);make('rect',{x:p.x-9,y:p.y-9,width:18,height:18,fill:'#fffdf5'})}}
+ else if(w.grid){({fish:drawFish,owl:drawOwl,rocket:drawRocket,family:drawFamily}[w.id])(svg,make,draw);for(const c of maze.cells){const p=fishCenter(c);make('rect',{x:p.x-9,y:p.y-9,width:18,height:18,fill:c.region==='chick'?'#fff9dd':c.region==='grass'?'#f4f7e9':'#fffdf5'})}}
  else {drawTurtle(svg,make,draw);scene=make('g',{transform:`translate(380 335) scale(1 .85) translate(${-CX} ${-CY})`},svg);make('circle',{cx:CX,cy:CY,r:OUTER,fill:'#fffdf5'});draw(`M ${CX-15} ${CY-12} L ${CX+7} ${CY-22} L ${CX+25} ${CY-5} L ${CX+17} ${CY+19} L ${CX-9} ${CY+24} L ${CX-25} ${CY+6} Z`,'#e6eedb','#b6c8a1',3);}
  const wallLayer=make('g',{'aria-hidden':'true'});
  if(w.id==='turtle')for(const wall of maze.walls)if(wall.every(p=>Math.abs(Math.hypot(p.x-CX,p.y-CY)-OUTER)<.01))draw(wall.map((p,i)=>`${i?'L':'M'} ${p.x} ${p.y}`).join(' '),'none','#9ab18a',12,wallLayer);
@@ -45,13 +45,13 @@ function buildArtwork(w){
 function selectWork(id,{remember=true}={}){
  if(remember&&current)sessions.set(work.id,{points:points.slice(),current,currentCell,started,complete});
  work=works.find(w=>w.id===id)||works[0];maze=work.grid?createGridMaze(work.id,work.seed):createMaze(work.seed,work.branchiness);buildArtwork(work);
- const thumb=$(`#${work.id}-card svg`);if(!thumb.childNodes.length){thumb.innerHTML=svg.innerHTML;thumb.querySelectorAll('[id]').forEach(el=>{const old=el.id;el.id=`thumb-${work.id}-${old}`;for(const ref of thumb.querySelectorAll(`[fill="url(#${old})"]`))ref.setAttribute('fill',`url(#${el.id})`)})}
- $('#maze-title').textContent=`${work.name}の めいろ`;$('.heading .eyebrow span').textContent=String(works.indexOf(work)+1).padStart(2,'0');
+ const thumb=$(`#${work.id}-card svg`);if(!thumb.childNodes.length){thumb.setAttribute('viewBox',svg.getAttribute('viewBox'));thumb.innerHTML=svg.innerHTML;thumb.querySelectorAll('[id]').forEach(el=>{const old=el.id;el.id=`thumb-${work.id}-${old}`;for(const ref of thumb.querySelectorAll(`[fill="url(#${old})"]`))ref.setAttribute('fill',`url(#${el.id})`)})}
+ $('#maze-title').textContent=work.title||`${work.name}の めいろ`;$('.heading .eyebrow span').textContent=String(works.indexOf(work)+1).padStart(2,'0');
  $('.heading .eyebrow').firstChild.textContent=work.id==='rocket'?'のりものの めいろ ':'いきものの めいろ ';document.title=`イラストめいろ｜${work.name}`;svg.setAttribute('aria-label',`${work.name}の迷路。左のスタートから右のゴールまで、道をなぞって進みます。`);
  history.replaceState(null,'',`#${work.id}`);
- $('#success-message').innerHTML=`さいごまで たどりつけたね。<br>${work.id==='rocket'?'うちゅうへの ぼうけん、だいせいこう！':work.name+'も うれしそう！'}`;
+ $('#success-message').innerHTML=`さいごまで たどりつけたね。<br>${work.id==='rocket'?'うちゅうへの ぼうけん、だいせいこう！':work.id==='family'?'おやこ みんなに あえたね！':work.name+'も うれしそう！'}`;
  const saved=sessions.get(work.id);if(saved){({points,current,currentCell,started,complete}=saved);active=false;render();$('#instruction').textContent=complete?'やったね！ ゴールに ついたよ！':started?'いろの ついた さきから つづけよう！':'スタートから ゆびで なぞってみよう！'}else reset();
- $('#zoom-controls').hidden=!work.grid;$('.board').classList.toggle('detailed',work.grid);setPan(false);setZoom(1);badges();
+ $('.zoom-hint').textContent=work.wide?'ひろい めいろは おおきくしてね':'こまかい みちは おおきくしてね';$('#zoom-controls').hidden=!work.grid;$('.board').classList.toggle('detailed',work.grid);setPan(false);setZoom(1);badges();
 }
 svg.setAttribute('tabindex','0');svg.setAttribute('role','application');
 function render(){trail.setAttribute('d',points.map((p,i)=>`${i?'L':'M'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' '));tip.setAttribute('transform',`translate(${current.x-s.x} ${current.y-s.y})`)}

@@ -8,16 +8,19 @@ export function fishCenter(c){return {x:ORIGIN.x+(c.col+.5)*CELL,y:ORIGIN.y+(c.r
 const SHAPES={
  fish:{contains:(x,y)=>((x-335)/224)**2+((y-320)/160)**2<=1||inPolygon(x,y,tail),startY:320,goalY:400},
  owl:{contains:(x,y)=>((x-380)/205)**2+((y-370)/178)**2<=1||inPolygon(x,y,[[210,295],[145,435],[240,483]])||inPolygon(x,y,[[550,295],[615,435],[520,483]]),startY:385,goalY:430},
- rocket:{contains:(x,y)=>(x>=220&&x<=540&&y>=205&&y<=490)||inPolygon(x,y,[[220,205],[380,158],[540,205]])||inPolygon(x,y,[[235,330],[130,510],[240,470]])||inPolygon(x,y,[[525,330],[630,510],[520,470]]),startY:450,goalY:450}
+ rocket:{contains:(x,y)=>(x>=220&&x<=540&&y>=205&&y<=490)||inPolygon(x,y,[[220,205],[380,158],[540,205]])||inPolygon(x,y,[[235,330],[130,510],[240,470]])||inPolygon(x,y,[[525,330],[630,510],[520,470]]),startY:450,goalY:450},
+ family:{width:57,height:35,startY:435,goalY:590,
+  contains:(x,y)=>((x-420)/250)**2+((y-440)/180)**2<=1||(x>=250&&x<=370&&y>=238&&y<=425)||inPolygon(x,y,[[580,410],[678,235],[734,270],[702,469],[610,535]])||((x-815)/106)**2+((y-490)/95)**2<=1||((x-1005)/89)**2+((y-592)/79)**2<=1||inPolygon(x,y,[[495,552],[742,510],[884,548],[1028,585],[1082,657],[884,682],[647,646],[432,626]]),
+  region:(x,y)=>((x-1005)/89)**2+((y-592)/79)**2<=1?'chick':((x-815)/106)**2+((y-490)/95)**2<=1?'chick':x>650&&y>540?'grass':'hen'}
 };
 export function createGridMaze(shape='fish',seed=1){
  const profile=SHAPES[shape];if(!profile)throw Error(`Unknown maze shape: ${shape}`);
  let state=seed;const random=()=>{state=(Math.imul(state,1664525)+1013904223)>>>0;return state/4294967296};
  const cells=[],lookup=new Map();
- for(let row=0;row<HEIGHT;row++)for(let col=0;col<WIDTH;col++){
+ for(let row=0;row<(profile.height||HEIGHT);row++)for(let col=0;col<(profile.width||WIDTH);col++){
   const p=fishCenter({row,col});
   if(profile.contains(p.x,p.y)){
-   const c={id:cells.length,row,col,links:[],neighbors:[]};cells.push(c);lookup.set(`${col},${row}`,c);
+   const c={id:cells.length,row,col,links:[],neighbors:[]};if(profile.region)c.region=profile.region(p.x,p.y);cells.push(c);lookup.set(`${col},${row}`,c);
   }
  }
  for(const c of cells)for(const [dc,dr] of [[1,0],[0,1],[-1,0],[0,-1]]){const n=lookup.get(`${c.col+dc},${c.row+dr}`);if(n)c.neighbors.push(n.id)}

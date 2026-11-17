@@ -81,3 +81,35 @@ export function drawRocket(svg,make,draw){
  for(const [x,y,r] of [[138,143,8],[600,100,11],[650,285,6],[95,294,5]])draw(`M ${x} ${y-r} L ${x+3} ${y-3} L ${x+r} ${y} L ${x+3} ${y+3} L ${x} ${y+r} L ${x-3} ${y+3} L ${x-r} ${y} L ${x-3} ${y-3} Z`,'#ddc892','none');
  make('circle',{cx:149,cy:238,r:4,fill:'#d0dfe0'});make('circle',{cx:613,cy:173,r:5,fill:'#d0dfe0'});
 }
+export function drawFamily(svg,make,draw){
+ svg.innerHTML='<defs><linearGradient id="hen-cream" x2=".3" y2="1"><stop stop-color="#fff7df"/><stop offset="1" stop-color="#e9d9b1"/></linearGradient><linearGradient id="chick-yellow" x2=".3" y2="1"><stop stop-color="#fff0a7"/><stop offset="1" stop-color="#e9cd77"/></linearGradient></defs>';
+ make('ellipse',{cx:644,cy:721,rx:493,ry:20,fill:'#edf0df'});
+ draw('M 330 610 L 330 670 M 465 610 L 465 670 M 313 678 L 330 670 L 347 678 M 448 678 L 465 670 L 482 678','none','#c4a166',7);
+ draw('M 978 652 L 978 690 M 1022 652 L 1022 690 M 967 697 L 978 690 L 990 697 M 1011 697 L 1022 690 L 1034 697','none','#c4a166',6);
+ // The grass is part of the same connected maze, joining the three bodies.
+ draw('M 432 612 Q 559 503 745 501 Q 865 520 1038 576 Q 1088 607 1095 663 Q 999 700 881 693 L 641 657 Z','#dce7c8','none');
+ draw('M 578 432 Q 622 348 655 269 Q 676 212 699 238 Q 730 238 741 272 Q 752 333 705 476 L 614 546 Z','url(#hen-cream)','#b5a17d',4);
+ make('ellipse',{cx:420,cy:440,rx:258,ry:187,fill:'url(#hen-cream)',stroke:'#b5a17d','stroke-width':4});
+ draw('M 244 363 L 239 233 Q 235 198 255 178 L 370 178 Q 388 210 378 255 L 380 358 Z','url(#hen-cream)','#b5a17d',4);
+ make('ellipse',{cx:307,cy:185,rx:81,ry:75,fill:'#fff8e4',stroke:'#b5a17d','stroke-width':4});
+ draw('M 258 125 C 236 107 247 83 268 89 C 259 62 292 54 304 78 C 313 50 343 65 338 90 C 366 75 381 107 353 129 Z','#dfa195','#b88277',4);
+ draw('M 376 187 L 412 205 L 375 218 Z','#e3b868','#b99861',3);
+ draw('M 379 220 C 402 236 393 257 378 251 Q 365 241 379 220 Z','#dfa195','#b88277',3);
+ make('ellipse',{cx:338,cy:176,rx:7,ry:9,fill:'#514638'});make('circle',{cx:336,cy:173,r:2,fill:'#fff'});
+ make('ellipse',{cx:348,cy:200,rx:14,ry:7,fill:'#e5b4a0',opacity:.65});
+ draw('M 293 202 Q 306 215 320 203','none','#b5a17d',3);
+ make('ellipse',{cx:815,cy:490,rx:113,ry:102,fill:'url(#chick-yellow)',stroke:'#bda76b','stroke-width':4});
+ make('circle',{cx:812,cy:350,r:63,fill:'url(#chick-yellow)',stroke:'#bda76b','stroke-width':4});
+ draw('M 791 290 Q 788 273 803 277 M 809 288 Q 814 270 825 279','none','#bda76b',4);
+ make('ellipse',{cx:832,cy:341,rx:5.5,ry:7,fill:'#514638'});make('circle',{cx:830,cy:339,r:1.8,fill:'#fff'});
+ draw('M 869 348 L 893 362 L 868 374 Z','#e3b868','#b99861',3);
+ make('ellipse',{cx:844,cy:365,rx:12,ry:6,fill:'#e5b4a0',opacity:.7});
+ make('ellipse',{cx:1005,cy:592,rx:96,ry:86,fill:'url(#chick-yellow)',stroke:'#bda76b','stroke-width':4});
+ make('circle',{cx:1005,cy:465,r:55,fill:'url(#chick-yellow)',stroke:'#bda76b','stroke-width':4});
+ draw('M 987 413 Q 986 398 998 402 M 1004 412 Q 1010 395 1020 405','none','#bda76b',3);
+ make('ellipse',{cx:1021,cy:458,rx:5,ry:6.5,fill:'#514638'});make('circle',{cx:1019,cy:456,r:1.5,fill:'#fff'});
+ draw('M 1056 463 L 1078 476 L 1054 486 Z','#e3b868','#b99861',3);
+ make('ellipse',{cx:1032,cy:479,rx:10,ry:5.5,fill:'#e5b4a0',opacity:.7});
+ for(const [x,y] of [[136,641],[711,706],[1124,687]])draw(`M ${x} ${y} Q ${x-22} ${y-26} ${x-13} ${y-39} Q ${x+4} ${y-29} ${x+2} ${y-9} Q ${x+10} ${y-33} ${x+25} ${y-31} Q ${x+27} ${y-9} ${x+9} ${y+1} Z`,'#afc493','none');
+ for(const [x,y] of [[139,193],[1061,264]]){make('circle',{cx:x,cy:y,r:5,fill:'#e0c78c'});draw(`M ${x-9} ${y-6} Q ${x-24} ${y-20} ${x-26} ${y-3} M ${x+9} ${y-6} Q ${x+24} ${y-20} ${x+26} ${y-3}`,'none','#c4cda9',3);}
+}
