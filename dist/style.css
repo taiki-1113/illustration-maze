@@ -19,7 +19,7 @@ button{transition:background .14s,box-shadow .14s,transform .14s}
 .maze-card:after{right:7px;bottom:7px;border-right:1px solid;border-bottom:1px solid;border-radius:0 0 4px}
 .card-heading{display:flex;align-items:baseline;gap:10px;min-width:0}.card-number{font-size:13px;font-variant-numeric:tabular-nums;flex-shrink:0}
 .card-heading strong{font-weight:900;font-size:17px;line-height:1.45;flex:1;overflow-wrap:anywhere}.card-cleared{color:#a4421f;font-size:11px;white-space:nowrap}
-.maze-card svg{width:100%;height:auto;aspect-ratio:760/650;display:block;background:#f9f4e6;border-radius:6px;overflow:hidden}
+.maze-card .card-preview{width:100%;height:auto;aspect-ratio:760/650;object-fit:contain;display:block;background:#f9f4e6;border-radius:6px;overflow:hidden}
 .card-action,.primary-button{color:#fff8e6;background:var(--teal);border:1px solid #0c4540;box-shadow:0 3px 0 var(--ochre);border-radius:5px;font-weight:900;text-align:center;padding:9px 15px}
 .card-action{align-self:center;min-width:65%;font-size:16px;outline:1px solid #f3ead0;outline-offset:-4px}
 .maze-card:hover .card-action,.primary-button:hover{background:#0a4541}.maze-card:hover{background:#fffbee}.maze-card:active .card-action,button:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ochre)}

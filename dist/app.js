@@ -54,7 +54,6 @@ function selectWork(id,{remember=true,writeHistory=true}={}){
  if(remember&&current)sessions.set(work.id,{points:points.slice(),current,currentCell,started,complete});
  $('#home').hidden=true;$('#play').hidden=false;document.body.classList.add('playing');
  work=works.find(w=>w.id===id)||works[0];maze=work.grid?createGridMaze(work.id,work.seed):createMaze(work.seed,work.branchiness);nearbyWalls(maze.walls,work.grid?3.6:5);$('#play').dataset.work=work.id;playOrientation.update(work.orientation);buildArtwork(work);
- const thumb=$(`#${work.id}-card svg`);if(!thumb.childNodes.length){thumb.setAttribute('viewBox',svg.getAttribute('viewBox'));thumb.innerHTML=svg.innerHTML;thumb.querySelectorAll('[id]').forEach(el=>{const old=el.id;el.id=`thumb-${work.id}-${old}`;for(const ref of thumb.querySelectorAll(`[fill="url(#${old})"]`))ref.setAttribute('fill',`url(#${el.id})`)})}
  $('#maze-title').textContent=work.title||`${work.name}の めいろ`;
  document.title=`イラストめいろ｜${work.name}`;svg.setAttribute('aria-label',`${work.name}の迷路。スタートからゴールまで、道をなぞって進みます。1本指でなぞり、2本指で拡大・移動できます。Enterで開始し、矢印キーで進めます。`);
  if(writeHistory)history.replaceState(null,'',`#${work.id}`);
@@ -88,10 +87,10 @@ svg.addEventListener('keydown',e=>{if(complete)return;if(e.key==='Enter'||e.key=
 function showHome(){
  playOrientation.leave();
  if(current)sessions.set(work.id,{points:points.slice(),current,currentCell,started,complete});
- navigation.clear();painter.clear();active=false;$('#play').hidden=true;$('#home').hidden=false;document.body.classList.remove('playing');document.title='イラストめいろ';badges();window.scrollTo(0,homeScroll);
+ navigation.clear();painter.clear();active=false;$('#play').hidden=true;svg.replaceChildren();maze=null;trail=null;tip=null;scene=svg;$('#home').hidden=false;document.body.classList.remove('playing');document.title='イラストめいろ';badges();window.scrollTo(0,homeScroll);
 }
 function route(){const id=location.hash.slice(1);if(works.some(w=>w.id===id)){selectWork(id,{writeHistory:false});svg.focus({preventScroll:true})}else showHome()}
-$('#collection-grid').innerHTML=works.map((w,i)=>`<button id="${w.id}-card" class="maze-card" aria-label="${w.name} あそぶ"><span class="card-heading"><span class="card-number">${String(i+1).padStart(2,'0')}</span><strong>${w.name}</strong><span class="card-cleared" hidden>クリア</span></span><svg viewBox="0 0 760 650" aria-hidden="true" focusable="false"></svg><span class="card-action">あそぶ</span></button>`).join('');
+$('#collection-grid').innerHTML=works.map((w,i)=>`<button id="${w.id}-card" class="maze-card" aria-label="${w.name} あそぶ"><span class="card-heading"><span class="card-number">${String(i+1).padStart(2,'0')}</span><strong>${w.name}</strong><span class="card-cleared" hidden>クリア</span></span><img class="card-preview" src="./assets/previews/${w.id}.webp" width="640" height="548" alt="" aria-hidden="true" loading="${i<3?'eager':'lazy'}" decoding="async"><span class="card-action">あそぶ</span></button>`).join('');
 $('#reset').onclick=reset;
 for(const w of works)$(`#${w.id}-card`).onclick=()=>{homeScroll=window.scrollY;playOrientation.enter(w.orientation);location.hash=w.id};
 $('#next-work').onclick=()=>{$('#success-dialog').close();const next=works[(works.indexOf(work)+1)%works.length];playOrientation.enter(next.orientation);location.hash=next.id};
@@ -100,8 +99,12 @@ $('#finish').onclick=()=>{$('#success-dialog').close();svg.focus({preventScroll:
 $('#success-dialog').addEventListener('click',e=>{if(e.target===e.currentTarget){const r=e.currentTarget.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)e.currentTarget.close()}});
 window.addEventListener('blur',()=>navigation.clear());
 document.addEventListener('visibilitychange',()=>{if(document.hidden)navigation.clear()});
-for(const w of works)selectWork(w.id,{remember:false,writeHistory:false});
 route();
 window.addEventListener('hashchange',route);
 new ResizeObserver(()=>{if($('#play').hidden)return;navigation.clear();fitBoard();keepCurrentVisible()}).observe($('.board'));
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').then(()=>{
+ const warm=()=>navigator.serviceWorker.ready.then(reg=>reg.active?.postMessage({type:'warm-art'})).catch(()=>{});
+ const idle=()=>{'requestIdleCallback'in window?requestIdleCallback(warm,{timeout:5000}):setTimeout(warm,1000)};
+ if(document.readyState==='complete')idle();else window.addEventListener('load',idle,{once:true});
+ navigator.serviceWorker.addEventListener('controllerchange',idle);
+}).catch(()=>{});

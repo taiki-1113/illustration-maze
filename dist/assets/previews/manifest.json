@@ -1,0 +1,75 @@
+{
+  "width": 640,
+  "previews": {
+    "snail": {
+      "file": "snail.webp",
+      "bytes": 31682,
+      "width": 640,
+      "height": 547,
+      "sourceHash": "ecd23b17196e4fe749c75452176519222e0b8f7b0e6a779705d9e9c3f963f4ff"
+    },
+    "turtle": {
+      "file": "turtle.webp",
+      "bytes": 31718,
+      "width": 640,
+      "height": 547,
+      "sourceHash": "a676108ef9b6eaac384a9b8dbb9fdcfe90ba1f3ad234c7a1c1b8ef939e60d180"
+    },
+    "fish": {
+      "file": "fish.webp",
+      "bytes": 22580,
+      "width": 640,
+      "height": 547,
+      "sourceHash": "159c26caf781b9005eb4aaaf4a8ec893a01ec0ca399133096d68a08a54cc4fc3"
+    },
+    "owl": {
+      "file": "owl.webp",
+      "bytes": 23280,
+      "width": 640,
+      "height": 547,
+      "sourceHash": "f140f70785f39a87f0ea63a9f1ef829ad5c32841ade3d5a4831d07719b834c7c"
+    },
+    "rocket": {
+      "file": "rocket.webp",
+      "bytes": 20892,
+      "width": 640,
+      "height": 547,
+      "sourceHash": "c95e1a2a1be14c40ddbd7fa5ba4b12f1111b31250770d0428db4acc045118fb9"
+    },
+    "family": {
+      "file": "family.webp",
+      "bytes": 27660,
+      "width": 640,
+      "height": 427,
+      "sourceHash": "027e53ddbe8d492ba3f67c1390aa6f92211a130878f0223bac123468c51819a5"
+    },
+    "garden": {
+      "file": "garden.webp",
+      "bytes": 28110,
+      "width": 640,
+      "height": 427,
+      "sourceHash": "0888bb1804f1631bef0990308518fcffa8d2c2bc49758bdadb2cce753b0f5f56"
+    },
+    "sea": {
+      "file": "sea.webp",
+      "bytes": 29344,
+      "width": 640,
+      "height": 427,
+      "sourceHash": "5596cb284726cdb7b61ebb4fb47016cf6fbbefba4ccaf8b8e856bef24413b7f0"
+    },
+    "picnic": {
+      "file": "picnic.webp",
+      "bytes": 92628,
+      "width": 640,
+      "height": 427,
+      "sourceHash": "297d363cf182928d8f95f4b723f0e3a0dc16f000caa8f325e1b418bce7321d9d"
+    },
+    "space": {
+      "file": "space.webp",
+      "bytes": 57962,
+      "width": 640,
+      "height": 427,
+      "sourceHash": "730010eb2fabc448aab5be96d2b3bd828280b9124c29e010fb55a6feb832a09c"
+    }
+  }
+}
