@@ -1,4 +1,4 @@
-import {distanceToSegment} from './maze.js';
+import {clearOfWalls} from './collision-index.js';
 
 export const CELL=18, ORIGIN={x:100,y:100};
 const WIDTH=33,HEIGHT=25;
@@ -76,5 +76,5 @@ export function createGridMaze(shape='fish',seed=1){
 }
 export const createFishMaze=(seed=1)=>createGridMaze('fish',seed);
 export function fishCellAt(p,maze){return maze.lookup.get(`${Math.floor((p.x-ORIGIN.x)/CELL)},${Math.floor((p.y-ORIGIN.y)/CELL)}`)||null}
-export function fishWalkable(p,maze,padding=3.6){if(!fishCellAt(p,maze))return false;return maze.walls.every(([a,b])=>distanceToSegment(p,a,b)>=padding)}
+export function fishWalkable(p,maze,padding=3.6){return !!fishCellAt(p,maze)&&clearOfWalls(p,maze.walls,padding)}
 export const fishEdgePoints=(a,b)=>[fishCenter(a),fishCenter(b)];

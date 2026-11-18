@@ -132,3 +132,7 @@ npm test
 - 3本目の指やタッチのキャンセル、画面の切替にも対応。迷路の経路データは変更していません。
 - PCはマウスでなぞる、トラックパッドの2本指で移動、ピンチまたはCtrl＋ホイールで拡大縮小。キーボードの＋／−でも拡大縮小できます。
 - ジェスチャー制御: dist/board-navigation.js。Service Workerに追加し、キャッシュをv11へ更新。
+
+## なぞり操作の軽量化
+
+近傍の壁と軌跡だけを検索し、画面更新は1フレーム1回に集約。計測条件と検証記録は `PERFORMANCE.md`、再計測は `node scripts/benchmark-input.mjs` を参照。縦横表示の相談案は `art-direction/viewport-discussion.md` に保存し、表示範囲は未変更です。

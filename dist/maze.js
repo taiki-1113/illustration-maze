@@ -1,3 +1,4 @@
+import {clearOfWalls} from './collision-index.js';
 export const TAU=Math.PI*2, CX=435,CY=302,INNER=53,STEP=37,COUNTS=[8,16,16,32,32],OUTER=INNER+STEP*COUNTS.length;
 export function point(r,a){return {x:CX+r*Math.cos(a),y:CY+r*Math.sin(a)}}
 export function center(c){return point(INNER+(c.r+.5)*STEP,(c.s+.5)*TAU/COUNTS[c.r])}
@@ -20,7 +21,7 @@ export function createMaze(seed=6,branchiness=0){
 }
 export function cellAt(p,maze){const dx=p.x-CX,dy=p.y-CY,r=Math.hypot(dx,dy);if(r<INNER||r>=OUTER)return null;const ring=Math.floor((r-INNER)/STEP),a=(Math.atan2(dy,dx)+TAU)%TAU;return maze.rings[ring][Math.floor(a/TAU*COUNTS[ring])]}
 export function distanceToSegment(p,a,b){const dx=b.x-a.x,dy=b.y-a.y,t=Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/(dx*dx+dy*dy)));return Math.hypot(p.x-a.x-t*dx,p.y-a.y-t*dy)}
-export function isWalkable(p,maze,padding=5){if(!cellAt(p,maze))return false;for(const wall of maze.walls)for(let i=1;i<wall.length;i++)if(distanceToSegment(p,wall[i-1],wall[i])<padding)return false;return true}
+export function isWalkable(p,maze,padding=5){return !!cellAt(p,maze)&&clearOfWalls(p,maze.walls,padding)}
 export function edgePoints(a,b){const pa=center(a),pb=center(b);if(a.r!==b.r)return [pa,pb];let da=Math.atan2(pb.y-CY,pb.x-CX)-Math.atan2(pa.y-CY,pa.x-CX);if(da>Math.PI)da-=TAU;if(da<-Math.PI)da+=TAU;const angle=Math.atan2(pa.y-CY,pa.x-CX),r=INNER+(a.r+.5)*STEP;return Array.from({length:13},(_,i)=>point(r,angle+da*i/12))}
 
 
