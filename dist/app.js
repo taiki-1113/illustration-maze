@@ -1,3 +1,4 @@
+import {createPlayOrientation} from './play-orientation.js';
 import {nearbyWalls} from './collision-index.js';
 import {TraceHistory,createFrameTask} from './trace-history.js';
 import {attachBoardNavigation,clampZoom,viewportShift} from './board-navigation.js';
@@ -5,16 +6,17 @@ import {createMaze,center as polarCenter,point,cellAt as polarCellAt,isWalkable 
 import {createGridMaze,fishCenter,fishCellAt,fishWalkable,fishEdgePoints} from './fish-maze.js';
 import {drawSnail,drawTurtle,drawFish,drawOwl,drawRocket,drawFamily,drawGarden,drawSea,drawPicnic,drawSpace} from './artworks.js';
 const $=s=>document.querySelector(s),svg=$('#maze'),NS='http://www.w3.org/2000/svg';
-const works=[{id:'snail',name:'かたつむり',seed:6,branchiness:0,color:'#d4a25c',trail:'#e9ad64'},{id:'turtle',name:'かめ',seed:2,branchiness:.2,color:'#7ba882',trail:'#90b99a'},{id:'fish',name:'さかな',seed:1,grid:true,color:'#669ca8',trail:'#91c6d0',border:'#89b8bf'},{id:'owl',name:'ふくろう',seed:24,grid:true,color:'#b08f64',trail:'#d7ba88',border:'#bca587'},{id:'rocket',name:'ロケット',seed:20,grid:true,color:'#bb817d',trail:'#e8b09c',border:'#ba9793'},{id:'family',name:'にわとりとひよこ',title:'にわとりと ひよこ',seed:1,grid:true,wide:true,color:'#a88e56',trail:'#d9b978',border:'#baa879'},{id:'garden',name:'はなばたけ',title:'ちょうちょと おはな',seed:1,grid:true,wide:true,color:'#a48caa',trail:'#cfafce',border:'#a9b590'},{id:'sea',name:'うみのなかま',title:'うみの なかまたち',seed:3,grid:true,wide:true,color:'#7babb5',trail:'#91c6ce',border:'#9bbec6',wallColor:'#586c73'},{id:'picnic',name:'おやつのピクニック',title:'おやつの ピクニック',seed:8,grid:true,wide:true,surfaceImage:true,color:'#b47b5d',trail:'#deb088',border:'#bdad96',wallColor:'#786b5a'},{id:'space',name:'うちゅうたんけん',title:'つきへの ぼうけん',seed:13,grid:true,wide:true,surfaceImage:true,navFill:'#142d43',cursorRocket:true,intro:'ロケットを つきの きちへ とどけよう！',live:'わくせいを まわって、つきの きちへ！',color:'#efd095',trail:'#e8bd6e',border:'#7ca5b5',wallColor:'#c7dbe0'}];
+const works=[{id:'snail',name:'かたつむり',seed:6,branchiness:0,color:'#d4a25c',trail:'#e9ad64'},{id:'turtle',name:'かめ',seed:2,branchiness:.2,color:'#7ba882',trail:'#90b99a'},{id:'fish',name:'さかな',seed:1,grid:true,color:'#669ca8',trail:'#91c6d0',border:'#89b8bf'},{id:'owl',name:'ふくろう',orientation:'portrait',seed:24,grid:true,color:'#b08f64',trail:'#d7ba88',border:'#bca587'},{id:'rocket',name:'ロケット',seed:20,grid:true,color:'#bb817d',trail:'#e8b09c',border:'#ba9793'},{id:'family',name:'にわとりとひよこ',title:'にわとりと ひよこ',seed:1,grid:true,wide:true,color:'#a88e56',trail:'#d9b978',border:'#baa879'},{id:'garden',name:'はなばたけ',title:'ちょうちょと おはな',seed:1,grid:true,wide:true,color:'#a48caa',trail:'#cfafce',border:'#a9b590'},{id:'sea',name:'うみのなかま',title:'うみの なかまたち',seed:3,grid:true,wide:true,color:'#7babb5',trail:'#91c6ce',border:'#9bbec6',wallColor:'#586c73'},{id:'picnic',name:'おやつのピクニック',title:'おやつの ピクニック',seed:8,grid:true,wide:true,surfaceImage:true,color:'#b47b5d',trail:'#deb088',border:'#bdad96',wallColor:'#786b5a'},{id:'space',name:'うちゅうたんけん',orientation:'landscape',title:'つきへの ぼうけん',seed:13,grid:true,wide:true,surfaceImage:true,navFill:'#142d43',cursorRocket:true,intro:'ロケットを つきの きちへ とどけよう！',live:'わくせいを まわって、つきの きちへ！',color:'#efd095',trail:'#e8bd6e',border:'#7ca5b5',wallColor:'#c7dbe0'}];
 let work=works[0],maze,scene=svg,trail,tip,s,g;
 let points=[],traceHistory=new TraceHistory(points),current,active=false,started=false,complete=false,currentCell;
 const sessions=new Map();
+const playOrientation=createPlayOrientation({onChange({preferred,showHint}){const note=$('#orientation-note');note.hidden=!showHint;note.textContent=showHint?(preferred==='portrait'?'縦向きであそぶ':'横向きであそぶ'):''}});
 const center=c=>work.grid?fishCenter(c):polarCenter(c);
 const cellAt=(p,m)=>work.grid?fishCellAt(p,m):polarCellAt(p,m);
 const isWalkable=(p,m)=>work.grid?fishWalkable(p,m):polarWalkable(p,m);
 const edgePoints=(a,b)=>work.grid?fishEdgePoints(a,b):polarEdgePoints(a,b);
 let zoom=1,baseWidth=0,homeScroll=0,navigation;
-function fitBoard(){const board=$('.board');if($('#play').hidden)return;const ratio=work.wide?1.5:760/650;baseWidth=Math.min(board.clientWidth,board.clientHeight*ratio);svg.style.width=`${baseWidth*zoom}px`}
+function fitBoard(){const board=$('.board');if($('#play').hidden)return;const ratio=work.wide?1.5:760/650;const inset=work.orientation?8:0;baseWidth=Math.min(board.clientWidth-inset,(board.clientHeight-inset)*ratio);svg.style.width=`${baseWidth*zoom}px`}
 function setZoom(value,anchor=null,focus=null){
  zoom=clampZoom(value,work.wide?5:3);
  const board=$('.board');board.classList.toggle('magnified',zoom>1);fitBoard();
@@ -51,14 +53,14 @@ function selectWork(id,{remember=true,writeHistory=true}={}){
  navigation?.clear();
  if(remember&&current)sessions.set(work.id,{points:points.slice(),current,currentCell,started,complete});
  $('#home').hidden=true;$('#play').hidden=false;document.body.classList.add('playing');
- work=works.find(w=>w.id===id)||works[0];maze=work.grid?createGridMaze(work.id,work.seed):createMaze(work.seed,work.branchiness);nearbyWalls(maze.walls,work.grid?3.6:5);buildArtwork(work);
+ work=works.find(w=>w.id===id)||works[0];maze=work.grid?createGridMaze(work.id,work.seed):createMaze(work.seed,work.branchiness);nearbyWalls(maze.walls,work.grid?3.6:5);$('#play').dataset.work=work.id;playOrientation.update(work.orientation);buildArtwork(work);
  const thumb=$(`#${work.id}-card svg`);if(!thumb.childNodes.length){thumb.setAttribute('viewBox',svg.getAttribute('viewBox'));thumb.innerHTML=svg.innerHTML;thumb.querySelectorAll('[id]').forEach(el=>{const old=el.id;el.id=`thumb-${work.id}-${old}`;for(const ref of thumb.querySelectorAll(`[fill="url(#${old})"]`))ref.setAttribute('fill',`url(#${el.id})`)})}
  $('#maze-title').textContent=work.title||`${work.name}の めいろ`;
  document.title=`イラストめいろ｜${work.name}`;svg.setAttribute('aria-label',`${work.name}の迷路。スタートからゴールまで、道をなぞって進みます。1本指でなぞり、2本指で拡大・移動できます。Enterで開始し、矢印キーで進めます。`);
  if(writeHistory)history.replaceState(null,'',`#${work.id}`);
  $('#success-message').innerHTML=`さいごまで たどりつけたね。<br>${work.id==='rocket'?'うちゅうへの ぼうけん、だいせいこう！':work.id==='family'?'おやこ みんなに あえたね！':work.id==='garden'?'おはなに たどりついたね！':work.id==='sea'?'うみの ぼうけん、だいせいこう！':work.id==='picnic'?'おやつの じかんに まにあったね！':work.id==='space'?'つきの きちに とうちゃく！':work.name+'も うれしそう！'}`;
  const saved=sessions.get(work.id);if(saved){({points,current,currentCell,started,complete}=saved);traceHistory=new TraceHistory(points);active=false;painter.flush();$('#instruction').textContent=complete?'やったね！ ゴールに ついたよ！':started?'いろの ついた さきから つづけよう！':work.intro||'スタートから ゆびで なぞってみよう！'}else reset();
- navigation?.clear();setZoom(1);const board=$('.board');if(work.grid&&board.clientHeight>board.clientWidth*1.25)setZoom(Math.round(board.clientHeight*(work.wide?1.5:760/650)/baseWidth));badges();
+ navigation?.clear();setZoom(1);const board=$('.board');if(work.grid&&!work.orientation&&board.clientHeight>board.clientWidth*1.25)setZoom(Math.round(board.clientHeight*(work.wide?1.5:760/650)/baseWidth));badges();
 }
 svg.setAttribute('tabindex','0');svg.setAttribute('role','application');
 const painter=createFrameTask(drawTrace);
@@ -84,14 +86,15 @@ navigation=attachBoardNavigation($('.board'),{
 });
 svg.addEventListener('keydown',e=>{if(complete)return;if(e.key==='Enter'||e.key===' '){e.preventDefault();started=true;$('#instruction').textContent='やじるしキーで みちを えらぼう！';return}const vectors={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]},v=vectors[e.key];if(!v||!started)return;e.preventDefault();const cell=maze.cells[currentCell],p=center(cell);let best=null,score=.45;for(const id of cell.links){const pts=edgePoints(cell,maze.cells[id]),q=pts[Math.min(3,pts.length-1)],dx=q.x-p.x,dy=q.y-p.y,dot=(dx*v[0]+dy*v[1])/Math.hypot(dx,dy);if(dot>score){score=dot;best=id}}if(best!==null){current=p;traceHistory.push(p);for(const q of edgePoints(cell,maze.cells[best])){if(complete)break;move(q)}keepCurrentVisible()}});
 function showHome(){
+ playOrientation.leave();
  if(current)sessions.set(work.id,{points:points.slice(),current,currentCell,started,complete});
  navigation.clear();painter.clear();active=false;$('#play').hidden=true;$('#home').hidden=false;document.body.classList.remove('playing');document.title='イラストめいろ';badges();window.scrollTo(0,homeScroll);
 }
 function route(){const id=location.hash.slice(1);if(works.some(w=>w.id===id)){selectWork(id,{writeHistory:false});svg.focus({preventScroll:true})}else showHome()}
 $('#collection-grid').innerHTML=works.map((w,i)=>`<button id="${w.id}-card" class="maze-card" aria-label="${w.name} あそぶ"><span class="card-heading"><span class="card-number">${String(i+1).padStart(2,'0')}</span><strong>${w.name}</strong><span class="card-cleared" hidden>クリア</span></span><svg viewBox="0 0 760 650" aria-hidden="true" focusable="false"></svg><span class="card-action">あそぶ</span></button>`).join('');
 $('#reset').onclick=reset;
-for(const w of works)$(`#${w.id}-card`).onclick=()=>{homeScroll=window.scrollY;location.hash=w.id};
-$('#next-work').onclick=()=>{$('#success-dialog').close();location.hash=works[(works.indexOf(work)+1)%works.length].id};
+for(const w of works)$(`#${w.id}-card`).onclick=()=>{homeScroll=window.scrollY;playOrientation.enter(w.orientation);location.hash=w.id};
+$('#next-work').onclick=()=>{$('#success-dialog').close();const next=works[(works.indexOf(work)+1)%works.length];playOrientation.enter(next.orientation);location.hash=next.id};
 $('#play-again').onclick=()=>{$('#success-dialog').close();reset();svg.focus({preventScroll:true})};
 $('#finish').onclick=()=>{$('#success-dialog').close();svg.focus({preventScroll:true})};
 $('#success-dialog').addEventListener('click',e=>{if(e.target===e.currentTarget){const r=e.currentTarget.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)e.currentTarget.close()}});
@@ -100,5 +103,5 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden)navigation.
 for(const w of works)selectWork(w.id,{remember:false,writeHistory:false});
 route();
 window.addEventListener('hashchange',route);
-new ResizeObserver(fitBoard).observe($('.board'));
+new ResizeObserver(()=>{if($('#play').hidden)return;navigation.clear();fitBoard();keepCurrentVisible()}).observe($('.board'));
 if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});

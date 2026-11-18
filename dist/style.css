@@ -43,3 +43,15 @@ dialog button{display:block;width:100%;margin-top:13px;min-height:43px}.secondar
 @media(max-width:420px){.home{padding:23px 14px 16px}.home-header h1{font-size:27px}.home-rocket{width:145px;height:100px}.card-heading strong{font-size:13px}.card-cleared{font-size:9px}.play-header{padding:4px 6px 4px 108px;justify-content:flex-end;min-height:36px}.play-header h1{font-size:13px}.play-header a{font-size:11px;left:5px}.play-controls{gap:9px}.reset-button{font-size:12px;padding-inline:9px}}
 @media(max-height:500px){.play{gap:2px}.play-header{min-height:29px}.play-header h1{font-size:13px}.play-header a{font-size:11px}.play-controls{min-height:35px;padding-bottom:3px}.reset-button{min-height:30px}.stage{padding:4px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important}}
+
+/* The two tablet studies frame the artwork, rather than the empty viewport. */
+.play[data-work=owl] .stage,.play[data-work=space] .stage{border:0;outline:0;padding:5px;background:transparent;border-radius:0}
+.play[data-work=owl] .board,.play[data-work=space] .board{border-radius:0}
+.play[data-work=owl] #maze,.play[data-work=space] #maze{outline:1px solid var(--ink);outline-offset:2px;box-shadow:0 0 0 4px var(--ochre);background:var(--paper)}
+.play[data-work=owl]{background:var(--paper)}
+.play[data-work=space]{background:#07152d;color:#ecd9b5;--ink:#c5b48b;--teal:#94a79c;--ochre:#927243}
+.play[data-work=space] #maze{background:#07152d}
+.play[data-work=space] .reset-button{background:#101f36;border-color:#b39c72;color:#ecd9b5;box-shadow:1px 2px 0 #93734b}
+.play[data-work=space] .reset-button:hover{background:#1c304b}
+.orientation-note{font-size:11px;margin:0 auto 0 0;font-weight:500}
+.play:fullscreen,html:fullscreen,body:fullscreen{width:100%;height:100%}
