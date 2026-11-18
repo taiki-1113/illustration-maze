@@ -55,3 +55,27 @@ dialog button{display:block;width:100%;margin-top:13px;min-height:43px}.secondar
 .play[data-work=space] .reset-button:hover{background:#1c304b}
 .orientation-note{font-size:11px;margin:0 auto 0 0;font-weight:500}
 .play:fullscreen,html:fullscreen,body:fullscreen{width:100%;height:100%}
+
+/* A printed completion card: one stamp, short paper fall, no repeating effects. */
+#success-dialog{width:370px;padding:27px 26px 17px;border:3px double #76583b;border-radius:8px;background:var(--paper) url('./assets/paper-grain.svg');box-shadow:0 5px 0 #3d2c1d44,0 20px 70px #19130e55;overflow:visible}
+#success-dialog:before{content:'';position:absolute;inset:6px;border:1px solid #cfb78f;border-radius:3px;pointer-events:none}
+#success-dialog[open]{animation:paper-arrive .18s ease-out}
+#success-dialog::backdrop{background:#181b1a8a;backdrop-filter:blur(2px)}
+.success-print{position:relative}.success-number{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:26px;margin:0 0 17px;padding:0 7px;border-block:1px solid #bda47b;font-size:13px;font-variant-numeric:tabular-nums;color:#886b40;letter-spacing:.12em}
+.success-picture{position:relative;width:245px;max-width:100%;margin:0 auto 15px;padding:0 23px 17px 0}
+.success-art{display:block;width:210px;max-width:100%;height:auto;aspect-ratio:760/650;object-fit:contain;border:1px solid #d2bf9e;border-radius:3px;background:#f9f4e6}
+#success-title.clear-stamp{position:absolute;right:0;bottom:0;display:grid;place-items:center;width:98px;height:98px;border:4px double #a84e36;border-radius:50%;margin:0;background:#fcf5e4f2;color:#a84e36;font-size:27px;font-weight:900;letter-spacing:.04em;white-space:nowrap;transform:rotate(-12deg)}
+#success-title.clear-stamp:after{content:'';position:absolute;inset:6px;border:1px solid #a84e3677;border-radius:50%}
+#success-dialog[open] .clear-stamp{animation:ink-stamp .42s cubic-bezier(.2,.6,.3,1) .12s both}
+.success-work{font-size:18px;font-weight:900;line-height:1.5;margin:12px 0 23px;color:#49311d}
+#success-dialog .primary-button{position:relative;margin-top:0;min-height:47px;box-shadow:0 3px 0 #b17b23;outline:1px solid #e5dfbf;outline-offset:-4px}
+.success-actions{display:flex;align-items:center;gap:10px;margin-top:11px}.success-actions button{flex:1;min-height:44px;margin:0;font-size:12px}.success-actions .secondary-button{border:0;background:none;color:#6c5942}.success-actions .secondary-button:hover,.success-actions .text-button:hover{text-decoration:underline}
+.celebration-paper{position:fixed;inset:0;z-index:2;overflow:hidden;pointer-events:none}
+.paper-bit{position:absolute;left:var(--x);top:-24px;display:block;width:6px;height:11px;opacity:0;animation:paper-fall var(--fall) cubic-bezier(.15,.3,.5,1) var(--delay) both}
+.paper-bit-1{width:5px;height:5px;border-radius:50%}.paper-bit-2{width:4px;height:14px}
+@keyframes paper-arrive{from{opacity:.3}to{opacity:1}}
+@keyframes ink-stamp{0%{opacity:0;transform:rotate(-12deg) scale(1.4)}55%{opacity:1;transform:rotate(-12deg) scale(.94)}100%{opacity:1;transform:rotate(-12deg) scale(1)}}
+@keyframes paper-fall{0%{opacity:0;transform:translate3d(0,-12px,0) rotate(0)}8%{opacity:1}78%{opacity:1}100%{opacity:0;transform:translate3d(var(--sway),100vh,0) rotate(var(--turn))}}
+@media(max-height:520px){#success-dialog{width:420px;padding:20px 24px 14px}.success-picture{width:180px;float:left;margin:0 18px 0 0;padding-right:20px}.success-art{width:155px}#success-title.clear-stamp{width:82px;height:82px;font-size:21px}.success-number{display:flex;width:32px;margin:0 0 10px}.success-work{font-size:16px;margin:16px 0 18px}.success-actions{clear:both;padding-top:6px}}
+
+#success-dialog button:focus-visible{outline:2px solid #b17b23;outline-offset:3px}

@@ -1,3 +1,4 @@
+import {createCelebration} from './celebration.js';
 import {createPlayOrientation} from './play-orientation.js';
 import {nearbyWalls} from './collision-index.js';
 import {TraceHistory,createFrameTask} from './trace-history.js';
@@ -10,6 +11,7 @@ const works=[{id:'snail',name:'かたつむり',seed:6,branchiness:0,color:'#d4a
 let work=works[0],maze,scene=svg,trail,tip,s,g;
 let points=[],traceHistory=new TraceHistory(points),current,active=false,started=false,complete=false,currentCell;
 const sessions=new Map();
+const celebration=createCelebration($('#success-dialog'));
 const playOrientation=createPlayOrientation({onChange({preferred,showHint}){const note=$('#orientation-note');note.hidden=!showHint;note.textContent=showHint?(preferred==='portrait'?'縦向きであそぶ':'横向きであそぶ'):''}});
 const center=c=>work.grid?fishCenter(c):polarCenter(c);
 const cellAt=(p,m)=>work.grid?fishCellAt(p,m):polarCellAt(p,m);
@@ -57,7 +59,7 @@ function selectWork(id,{remember=true,writeHistory=true}={}){
  $('#maze-title').textContent=work.title||`${work.name}の めいろ`;
  document.title=`イラストめいろ｜${work.name}`;svg.setAttribute('aria-label',`${work.name}の迷路。スタートからゴールまで、道をなぞって進みます。1本指でなぞり、2本指で拡大・移動できます。Enterで開始し、矢印キーで進めます。`);
  if(writeHistory)history.replaceState(null,'',`#${work.id}`);
- $('#success-message').innerHTML=`さいごまで たどりつけたね。<br>${work.id==='rocket'?'うちゅうへの ぼうけん、だいせいこう！':work.id==='family'?'おやこ みんなに あえたね！':work.id==='garden'?'おはなに たどりついたね！':work.id==='sea'?'うみの ぼうけん、だいせいこう！':work.id==='picnic'?'おやつの じかんに まにあったね！':work.id==='space'?'つきの きちに とうちゃく！':work.name+'も うれしそう！'}`;
+ $('#success-number').textContent=String(works.indexOf(work)+1).padStart(2,'0');$('#success-work').textContent=work.name;$('#success-art').src=`./assets/previews/${work.id}.webp`;
  const saved=sessions.get(work.id);if(saved){({points,current,currentCell,started,complete}=saved);traceHistory=new TraceHistory(points);active=false;painter.flush();$('#instruction').textContent=complete?'やったね！ ゴールに ついたよ！':started?'いろの ついた さきから つづけよう！':work.intro||'スタートから ゆびで なぞってみよう！'}else reset();
  navigation?.clear();setZoom(1);const board=$('.board');if(work.grid&&!work.orientation&&board.clientHeight>board.clientWidth*1.25)setZoom(Math.round(board.clientHeight*(work.wide?1.5:760/650)/baseWidth));badges();
 }
@@ -66,7 +68,7 @@ const painter=createFrameTask(drawTrace);
 function render(){painter.schedule()}
 function drawTrace(){trail.setAttribute('d',points.map((p,i)=>`${i?'L':'M'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' '));const prev=points.length>1?points.at(-2):{x:current.x-1,y:current.y};const angle=work.cursorRocket?Math.atan2(current.y-prev.y,current.x-prev.x)*180/Math.PI:0;tip.setAttribute('transform',`translate(${current.x-s.x} ${current.y-s.y}) rotate(${angle} ${s.x} ${s.y})`)}
 function reset(){points=[s];traceHistory=new TraceHistory(points);current=s;currentCell=maze.start.id;active=false;started=false;complete=false;painter.flush();navigation?.clear();setZoom(zoom);$('#instruction').textContent=work.intro||'スタートから ゆびで なぞってみよう！'}
-function win(){if(complete)return;complete=true;active=false;painter.flush();try{localStorage.setItem(`illustration-maze:${work.id}:v1`,'cleared')}catch{}badges();$('#instruction').textContent='クリア';$('#success-dialog').showModal()}
+function win(){if(complete)return;complete=true;active=false;painter.flush();try{localStorage.setItem(`illustration-maze:${work.id}:v1`,'cleared')}catch{}badges();$('#instruction').textContent='クリア';$('#success-dialog').showModal();celebration.play()}
 function move(target){const dx=target.x-current.x,dy=target.y-current.y,length=Math.hypot(dx,dy),steps=Math.ceil(length/2);if(!Number.isFinite(length))return;for(let i=0;i<steps;i++){const p={x:current.x+dx/steps,y:current.y+dy/steps};if(!isWalkable(p,maze))break;const next=cellAt(p,maze);if(next.id!==currentCell&&!maze.cells[currentCell].links.includes(next.id))break;currentCell=next.id;current=p;const oldIndex=traceHistory.previous(p);if(oldIndex>=0)traceHistory.truncate(oldIndex+1);traceHistory.push(p);if(next.id===maze.goal.id&&Math.hypot(p.x-g.x,p.y-g.y)<14){render();win();return}}render()}
 function keepCurrentVisible(){if(zoom===1)return;const board=$('.board'),r=board.getBoundingClientRect(),p=new DOMPoint(current.x,current.y).matrixTransform(scene.getScreenCTM());if(p.x<r.left+24)board.scrollLeft+=p.x-r.left-24;else if(p.x>r.right-24)board.scrollLeft+=p.x-r.right+24;if(p.y<r.top+24)board.scrollTop+=p.y-r.top-24;else if(p.y>r.bottom-24)board.scrollTop+=p.y-r.bottom+24}
 function eventPoint(e,matrix=scene.getScreenCTM().inverse()){const p=new DOMPoint(e.clientX,e.clientY).matrixTransform(matrix);return {x:p.x,y:p.y}}
@@ -89,7 +91,7 @@ function showHome(){
  if(current)sessions.set(work.id,{points:points.slice(),current,currentCell,started,complete});
  navigation.clear();painter.clear();active=false;$('#play').hidden=true;svg.replaceChildren();maze=null;trail=null;tip=null;scene=svg;$('#home').hidden=false;document.body.classList.remove('playing');document.title='イラストめいろ';badges();window.scrollTo(0,homeScroll);
 }
-function route(){const id=location.hash.slice(1);if(works.some(w=>w.id===id)){selectWork(id,{writeHistory:false});svg.focus({preventScroll:true})}else showHome()}
+function route(){if($('#success-dialog').open)$('#success-dialog').close();const id=location.hash.slice(1);if(works.some(w=>w.id===id)){selectWork(id,{writeHistory:false});svg.focus({preventScroll:true})}else showHome()}
 $('#collection-grid').innerHTML=works.map((w,i)=>`<button id="${w.id}-card" class="maze-card" aria-label="${w.name} あそぶ"><span class="card-heading"><span class="card-number">${String(i+1).padStart(2,'0')}</span><strong>${w.name}</strong><span class="card-cleared" hidden>クリア</span></span><img class="card-preview" src="./assets/previews/${w.id}.webp" width="640" height="548" alt="" aria-hidden="true" loading="${i<3?'eager':'lazy'}" decoding="async"><span class="card-action">あそぶ</span></button>`).join('');
 $('#reset').onclick=reset;
 for(const w of works)$(`#${w.id}-card`).onclick=()=>{homeScroll=window.scrollY;playOrientation.enter(w.orientation);location.hash=w.id};

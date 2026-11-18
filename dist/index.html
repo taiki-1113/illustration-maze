@@ -31,6 +31,14 @@
 </div>
 <p id="instruction" class="sr-only" role="status"></p>
 </section>
-<dialog id="success-dialog" aria-labelledby="success-title"><h2 id="success-title">クリア</h2><p id="success-message" hidden></p><button id="next-work" class="primary-button">つぎのめいろ</button><button id="play-again" class="secondary-button">もういちど</button><button id="finish" class="text-button">とじる</button></dialog>
+<dialog id="success-dialog" aria-labelledby="success-title" aria-describedby="success-work">
+<div class="success-print">
+<p id="success-number" class="success-number"></p>
+<div class="success-picture"><img id="success-art" class="success-art" alt="" width="210" height="180" decoding="async"><h2 id="success-title" class="clear-stamp">クリア</h2></div>
+<p id="success-work" class="success-work"></p>
+<button id="next-work" class="primary-button">つぎのめいろ</button>
+<div class="success-actions"><button id="play-again" class="secondary-button">もういちど</button><button id="finish" class="text-button">とじる</button></div>
+</div>
+</dialog>
 <script type="module" src="./app.js"></script>
 </body></html>
