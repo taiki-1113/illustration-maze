@@ -7,17 +7,19 @@ function pair(a,b){return {point:{x:(a.x+b.x)/2,y:(a.y+b.y)/2},distance:Math.max
 
 // Keep camera gestures separate from tracing. Once a second finger arrives,
 // every remaining contact belongs to navigation until all fingers are lifted.
-export function attachBoardNavigation(board,{readFrame,changeFrame,panBy,startTrace,moveTrace,endTrace}){
+export function attachBoardNavigation(board,{readFrame,changeFrame,panBy,startTrace,moveTrace,endTrace,flushFrame=()=>{},clearFrame=()=>{}}){
  const pointers=new Map();
  let traceId=null,blocked=false,gesture=null;
  function stopTrace(){traceId=null;endTrace()}
  function beginGesture(){
+  flushFrame();
   const ids=[...pointers.keys()].slice(0,2);
   const sample=pair(pointers.get(ids[0]),pointers.get(ids[1]));
   gesture={ids,...sample,frame:readFrame(sample.point)};
   board.classList.add('gesturing');
  }
  function clear(){
+  clearFrame();
   const ids=[...pointers.keys()];pointers.clear();gesture=null;blocked=false;stopTrace();board.classList.remove('gesturing');
   for(const id of ids)if(board.hasPointerCapture(id))board.releasePointerCapture(id);
  }
@@ -39,6 +41,7 @@ export function attachBoardNavigation(board,{readFrame,changeFrame,panBy,startTr
  });
  function finish(e){
   if(!pointers.has(e.pointerId))return;
+  flushFrame();
   pointers.delete(e.pointerId);
   if(traceId===e.pointerId)stopTrace();
   gesture=null;board.classList.remove('gesturing');

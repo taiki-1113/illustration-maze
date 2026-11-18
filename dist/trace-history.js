@@ -1,9 +1,11 @@
 const SIZE=5,key=(x,y)=>x+','+y;
 export class TraceHistory{
- constructor(points){this.points=points;this.buckets=new Map();for(let i=0;i<points.length;i++)this.index(i)}
+ constructor(points){this.points=points;this.dirtyFrom=0;this.buckets=new Map();for(let i=0;i<points.length;i++)this.index(i)}
  index(i){const p=this.points[i],id=key(Math.floor(p.x/SIZE),Math.floor(p.y/SIZE));if(!this.buckets.has(id))this.buckets.set(id,[]);this.buckets.get(id).push(i)}
- push(p){this.points.push(p);this.index(this.points.length-1)}
+ push(p){this.dirtyFrom=Math.min(this.dirtyFrom,this.points.length);this.points.push(p);this.index(this.points.length-1)}
+ consumeDirty(){const index=this.dirtyFrom;this.dirtyFrom=Infinity;return index}
  truncate(length){
+  this.dirtyFrom=Math.min(this.dirtyFrom,length);
   while(this.points.length>length){const p=this.points.at(-1),id=key(Math.floor(p.x/SIZE),Math.floor(p.y/SIZE)),bucket=this.buckets.get(id);bucket.pop();if(!bucket.length)this.buckets.delete(id);this.points.pop()}
  }
  previous(p){

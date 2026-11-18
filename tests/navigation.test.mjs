@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {attachBoardNavigation,clampZoom,viewportShift} from '../dist/board-navigation.js';
+import {createFrameTask} from '../dist/trace-history.js';
 
 class Board extends EventTarget{
  captures=new Set();classes=new Set();clientHeight=300;
@@ -21,6 +22,16 @@ function setup({allowTrace=true}={}){
  });
  return {board,trace,frames,pans,nav};
 }
+test('pinch bursts apply once per frame, flush on lift, and cancel on view changes',()=>{
+ const board=new Board(),queue=new Map(),applied=[];let next=0,pending=null;
+ const painter=createFrameTask(()=>{if(pending){applied.push(pending);pending=null}},{request:cb=>{queue.set(++next,cb);return next},cancel:id=>queue.delete(id)});
+ const nav=attachBoardNavigation(board,{readFrame:()=>({zoom:1,anchor:{x:.5,y:.5}}),changeFrame:frame=>{pending=frame;painter.schedule()},panBy(){},startTrace(){},moveTrace(){},endTrace(){},flushFrame:()=>painter.flush(),clearFrame:()=>{painter.clear();pending=null}});
+ board.emit('pointerdown',{clientX:100});board.emit('pointerdown',{pointerId:2,clientX:200});
+ for(let i=0;i<100;i++)board.emit('pointermove',{pointerId:2,clientX:200+i});
+ assert.equal(queue.size,1);assert.equal(applied.length,0);
+ board.emit('pointerup',{pointerId:2});assert.equal(applied.length,1);assert.equal(applied[0].zoom,1.99);assert.equal(queue.size,0);
+ board.emit('pointerdown',{pointerId:2,clientX:200});board.emit('pointermove',{pointerId:2,clientX:250});nav.clear();assert.equal(queue.size,0);assert.equal(applied.length,1);
+});
 test('one pointer traces and stops on release; a rejected start cannot draw',()=>{
  const {board,trace}=setup();
  board.emit('pointerdown');board.emit('pointermove');board.emit('pointerup');board.emit('pointermove');
