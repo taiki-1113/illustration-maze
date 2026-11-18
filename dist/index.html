@@ -1,6 +1,36 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#fbf8ef"><meta name="description" content="いきものやロケットの、イラスト迷路。ゆびでなぞって、ゴールまでたどろう。"><link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="stylesheet" href="./style.css"><title>イラストめいろ｜かたつむり</title></head>
-<body><header class="site-header"><a class="brand" href="#" aria-label="イラストめいろ ホーム"><span class="brand-icon">✿</span> イラスト<span>めいろ</span></a><span class="edition">ちいさな ぼうけん、はじめよう。</span><button id="collection" class="collection-button"><span aria-hidden="true">▦</span> めいろをえらぶ</button></header>
-<main><section class="game" aria-labelledby="maze-title"><div class="heading"><div><p class="eyebrow">いきものの めいろ <span>01</span></p><h1 id="maze-title">かたつむりの<span class="title-break"> めいろ</span></h1></div><span id="clear-badge" class="clear-badge" hidden>✓ クリアずみ</span></div><div class="instruction"><span class="hand" aria-hidden="true">☝</span><p id="instruction">スタートから ゆびで なぞってみよう！</p></div><div id="zoom-controls" class="zoom-controls" hidden><span class="zoom-hint">こまかい みちは おおきくしてね</span><div class="zoom-actions"><button id="zoom-out" aria-label="ちいさくする">−</button><output id="zoom-level" aria-live="polite">100%</output><button id="zoom-in" aria-label="おおきくする">＋</button><button id="pan-mode" aria-pressed="false">✥ えを うごかす</button></div></div><div class="board"><svg id="maze" viewBox="0 0 760 650" role="img" aria-label="かたつむりの迷路。左下のスタートから右のゴールまで、道をなぞって進みます。"></svg></div><div class="game-bottom"><p class="tip"><span class="tip-dot"></span>ゆびを はなしても、つづきから あそべるよ</p><button id="reset" class="reset-button"><span aria-hidden="true">↻</span> やりなおす</button></div><p class="keyboard-note">パソコンでは マウスで なぞれるよ。<br class="mobile-only">キーボードは Enter ではじめて、やじるしキーで すすもう。</p></section><footer><span class="footer-flower">✿</span> あせらず、じぶんの ペースで。 <span class="footer-flower small">✦</span></footer></main>
-<dialog id="collection-dialog"><button class="dialog-close" aria-label="とじる">×</button><p class="eyebrow">イラストめいろ</p><h2>すきな めいろで あそぼう</h2><p id="collection-progress" class="dialog-description">0 / 10 クリア</p><div class="collection-grid"><button id="snail-card" class="snail-card"><svg id="thumbnail" viewBox="0 0 760 650" aria-hidden="true"></svg><strong>かたつむり</strong><span class="card-status">あそぶ →</span></button><button id="turtle-card" class="snail-card"><svg viewBox="0 0 760 650" aria-hidden="true"></svg><strong>かめ</strong><span class="card-status">あそぶ →</span></button><button id="fish-card" class="snail-card"><svg viewBox="0 0 760 650" aria-hidden="true"></svg><strong>さかな</strong><span class="card-status">あそぶ →</span></button><button id="owl-card" class="snail-card"><svg viewBox="0 0 760 650" aria-hidden="true"></svg><strong>ふくろう</strong><span class="card-status">あそぶ →</span></button><button id="rocket-card" class="snail-card"><svg viewBox="0 0 760 650" aria-hidden="true"></svg><strong>ロケット</strong><span class="card-status">あそぶ →</span></button><button id="family-card" class="snail-card"><svg viewBox="0 0 1200 800" aria-hidden="true"></svg><strong>にわとりとひよこ</strong><span class="card-status">あそぶ →</span></button><button id="garden-card" class="snail-card"><svg viewBox="0 0 1200 800" aria-hidden="true"></svg><strong>はなばたけ</strong><span class="card-status">あそぶ →</span></button><button id="sea-card" class="snail-card"><svg viewBox="0 0 1200 800" aria-hidden="true"></svg><strong>うみのなかま</strong><span class="card-status">あそぶ →</span></button><button id="picnic-card" class="snail-card"><svg viewBox="0 0 1200 800" aria-hidden="true"></svg><strong>おやつのピクニック</strong><span class="card-status">あそぶ →</span></button><button id="space-card" class="snail-card"><svg viewBox="0 0 1200 800" aria-hidden="true"></svg><strong>うちゅうたんけん</strong><span class="card-status">あそぶ →</span></button></div><p class="collection-note">すきな めいろを、なんどでも。</p></dialog>
-<dialog id="success-dialog"><div class="celebration" aria-hidden="true">✦ <span>♛</span> ✦</div><p class="eyebrow">やったね！</p><h2>ゴール おめでとう！</h2><p id="success-message">さいごまで たどりつけたね。<br>かたつむりも うれしそう！</p><button id="next-work" class="primary-button">つぎの めいろへ →</button><button id="play-again" class="secondary-button">もういちど あそぶ <span>↻</span></button><button id="finish" class="text-button">めいろを みる</button></dialog><script type="module" src="./app.js"></script></body></html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f8f0dc">
+<meta name="description" content="ゆびやマウスでなぞって遊ぶ、10作品のイラスト迷路。">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./style.css">
+<title>イラストめいろ</title>
+</head>
+<body>
+<main id="home" class="home paper-frame">
+<header class="home-header"><h1>イラストめいろ</h1></header>
+<section class="collection" aria-labelledby="collection-title">
+<div class="collection-intro">
+<div class="collection-heading"><h2 id="collection-title">めいろ一覧</h2><p id="collection-progress">0 / 10 クリア</p></div>
+<img class="home-rocket" src="./assets/home-rocket.png" alt="" width="300" height="180">
+</div>
+<div id="collection-grid" class="collection-grid"></div>
+</section>
+<div class="end-rule" aria-hidden="true"><i></i></div>
+</main>
+<section id="play" class="play" aria-labelledby="maze-title" hidden>
+<header class="play-header"><a id="collection" href="#home">一覧にもどる</a><h1 id="maze-title"></h1></header>
+<div class="stage"><div class="board" id="board"><svg id="maze" viewBox="0 0 760 650" aria-label="迷路" aria-describedby="instruction"></svg></div></div>
+<div class="play-controls">
+<div id="zoom-controls" class="zoom-controls"><button id="zoom-out" aria-label="ちいさくする">−</button><output id="zoom-level" aria-live="polite">100%</output><button id="zoom-in" aria-label="おおきくする">＋</button><button id="pan-mode" aria-pressed="false">移動</button></div>
+<button id="reset" class="reset-button">やりなおす</button>
+</div>
+<p id="instruction" class="sr-only" role="status"></p>
+</section>
+<dialog id="success-dialog" aria-labelledby="success-title"><h2 id="success-title">クリア</h2><p id="success-message" hidden></p><button id="next-work" class="primary-button">つぎのめいろ</button><button id="play-again" class="secondary-button">もういちど</button><button id="finish" class="text-button">とじる</button></dialog>
+<script type="module" src="./app.js"></script>
+</body></html>

@@ -1,0 +1,20 @@
+# レトロUI 修正案3
+
+組み込み image_gen で案2を編集。案1はロケット挿絵と枠の参考。方向性確認用。実装・公開は未実施。
+
+## 編集プロンプト
+
+Create revision 3 of this Japanese children's maze website design by editing reference image 1 (the restrained revision 2).
+Image roles: reference image 1 is the EDIT TARGET and primary design. Reference image 2 is the older revision 1, used ONLY as a visual reference for its cute cream-and-vermilion flying rocket illustration in the top-left page's hero area and for its delicate printed border craftsmanship. Do not restore its copy or excessive icons.
+Client request: keep exactly the simplified amount of text from revision 2, add a little more ornamental craftsmanship in borders, and bring back the cute flying rocket illustration from the first design. Preserve retro × stylish, cream paper, petrol teal, dark chocolate ink, ochre shadows, vermilion highlights, printed storybook feel.
+Maintain one landscape 3:2 image with two front-on webpage mockups side by side, selection home on LEFT and play page on RIGHT. No presentation captions, no devices, no perspective.
+Changes to target:
+1. Give each page a refined perimeter hairline double-rule border, with small stepped / clipped corner flourishes reminiscent of mid-century stationery. Leave generous whitespace between border and content. Use tasteful very thin lines; moderate ornament, no baroque swirls or clipart.
+2. Enhance the six selection cards with a delicate second inset border, clipped corners and small restrained corner line details. Keep existing readable titles, numbers, completion text and teal "あそぶ" buttons, consistent grid. Add an elegant thin inset keyline on the primary buttons and retain the small ochre offset shadow. Do not add symbols or arrows.
+3. On the LEFT home page only, bring back the cute cream-and-vermilion flying rocket from reference image 2, with blue window and a small softly scalloped deep teal smoke/cloud shape, a couple of carefully drawn tiny ochre stars as part of that ONE cohesive illustration. Place it in a compact introductory band between the wordmark and grid, on the right side, balanced by the existing small "めいろ一覧" heading and plain "3 / 10 クリア" text at left. The illustration is a lovely visual accent about the size of a single card thumbnail, not a huge hero. Reflow vertical spacing gracefully so six cards remain clear and dominant. No extra headline or subtitle beside the rocket. Do not draw a scalloped badge around progress. Make this one original illustration feel like a printed children's book plate rather than emoji.
+4. Keep right page title, maze and controls as in target, but refine the frame around the space maze with a delicate layered ink-and-ochre double rule and subtle stepped corners that harmonize with the card borders. Keep decorative lines OUTSIDE the maze; no ornament or text over the play surface. Preserve its large size and actual planet-orbit maze.
+5. At bottom of each page a small centered symmetrical geometric line ornament may connect two thin horizontal rules, using only lines and one tiny diamond. No flower, star or character icons in footer; NO footer text.
+STRICT TEXT INVARIANTS: render ONLY existing text of target revision 2: wordmark "イラストめいろ" on both pages; home "めいろ一覧", "3 / 10 クリア"; card numbers 01..06, names "かたつむり", "かめ", "さかな", "ふくろう", "ロケット", "にわとりとひよこ"; three plain "クリア" completion labels; six buttons "あそぶ". Play header "一覧にもどる", "10", "つきへの ぼうけん"; controls "−", "100%", "＋", "移動", "やりなおす". Do NOT add any other letters or words. In particular DO NOT restore "きょうは、どのぼうけん", encouragement, instructions, slogans, tiny explanation text, button-design strip or specimen captions.
+Keep all existing maze artworks within cards and play page. Do not add decorative flowers, emoji, crowns, ribbons, celebration rays, wreath stamps, badges or scattered illustrations. The returned rocket is the ONLY additional pictorial decoration.
+The overall result should strike the balance: restrained information, visually crafted printed frames, one charming rocket, stylish retro graphic design, practical real-web-page layout.
+

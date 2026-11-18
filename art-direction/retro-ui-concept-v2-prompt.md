@@ -1,0 +1,22 @@
+# レトロUI 修正案2
+
+組み込み image_gen で案1を参照して編集。方向性確認用。実装・公開は未実施。
+カード絵と迷路線は仮表現です。実装には既存10作品を使用します。
+
+## 編集プロンプト
+
+Edit the attached UI concept image into a restrained, professionally typeset second revision. The client likes the RETRO × STYLISH art direction but dislikes unnecessary copy, emoji-like ornaments, and the overly AI-generated feeling. Make a meaningful simplification while preserving the warm ivory paper, deep teal, dark brown ink, muted ochre and vermilion palette, mid-century printed-book character, subtle paper grain, typography quality, card illustrations, and the space maze content.
+Keep two front-on web page mockups side by side: LEFT home selection, RIGHT space maze play page. This is a design preview only. No physical devices or perspective. Use the whole landscape 3:2 canvas for these TWO pages. DELETE the entire bottom button/stamp design-specimen strip and all its captions; no UI design explanations on the page. Remove the large ornamental perimeter border surrounding each page. A restrained simple top rule and thin clean card/maze borders are sufficient.
+LEFT:
+Header is TEXT ONLY "イラストめいろ" in a confident dark-brown Japanese wordmark, with a thin deep teal rule below. REMOVE the flower logo, all flower icons, all decorative stars, sparkles, celebratory rays, the hero rocket illustration, clouds, scalloped progress badge, footer slogans, footer ornaments, pagination dots and extra section titles.
+No marketing hero, no catchphrase, no subtitle. DELETE "きょうは、どの ぼうけん？", DELETE "すきな めいろを えらんでね", DELETE decorative "めいろを えらぶ" ribbon.
+Below the wordmark use one small practical heading "めいろ一覧" aligned left, and understated progress text "3 / 10 クリア" aligned right, both small enough that the cards are dominant. No stamp shape around progress.
+Use the recovered space to create a much more generous, balanced grid of SIX cards, 3 columns by 2 rows, representing the first six of ten existing works. Keep existing illustrated maze thumbnails for snail, turtle, fish, owl, rocket, hen/chicks, preserve their illustration quality. Every card has a small plain printed number 01–06, its Japanese name, large illustration, and ONE deep teal button labeled exactly "あそぶ". No arrow on buttons, no icons, no badges on top of pictures, no laurels/wreaths. Three completed cards can have small plain "クリア" text beside their number, without ornament. Names: "かたつむり", "かめ", "さかな", "ふくろう", "ロケット", "にわとりとひよこ". Clean single thin ink borders, subtly clipped corners if desired, extremely slight 2px offset print-like button shadow. No fake glossy material or giant rounded pills. Consistent alignment and roomy margins.
+RIGHT:
+Same TEXT ONLY wordmark "イラストめいろ"; plain top navigation "一覧にもどる" without arrow or icon, subtle teal rule.
+Below: tiny plain number "10" (no red ribbon), one clear title "つきへの ぼうけん". REMOVE decorative rays around title. Remove the rocket instruction icon and the entire instruction banner; the maze's start/goal already conveys the purpose.
+Preserve the actual dark indigo space illustration with Earth, Saturn and moon surrounded by orbit mazes, left departing rocket and right destination base. This large illustration should be dominant, framed in a refined thin double-line cream mat with adequate breathing room. Avoid covering the artwork with UI. Start and goal labels only inside maze if present.
+Below artwork one aligned functional control row: square "−" button, small "100%", square "＋" button, clean outlined toggle labeled "移動", and a secondary button labeled "やりなおす". Use text only apart from functional minus and plus symbols, no circular arrow or four-way arrow pictograms. The current image contains the typo "えをうごかす"; remove that phrase entirely and use exactly "移動". Delete the note about resuming after lifting a finger and all footer copy and flowers.
+No ornamental illustrations OUTSIDE the actual maze thumbnails / space artwork. No emoji, stars, flower symbols, hearts, tiny rockets, crowns, flags, encouragement text, English editorial labels, speech bubbles, slogan, placeholder copy or design notes anywhere in the UI.
+The result must feel like a thoughtfully edited real website designed by an independent Japanese design studio: quiet editorial hierarchy, legible and tactile, warm and charming yet simple. Keep the retro character through proportion, type, colors, rules and paper texture, with the finished maze content as the only illustration. Render Japanese exactly.
+
