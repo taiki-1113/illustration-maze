@@ -9,6 +9,12 @@ await mkdir(output,{recursive:true});
 const manifest={width:640,previews:{}};
 for(const id of ids){
  const original=await readFile(new URL(id+'.svg',sources),'utf8');
+ if(original.includes('data-painted-scene=')){
+  const scene=await readFile(new URL('assets/scenes/'+id+'.webp',dist)),destination=new URL(id+'.webp',output);
+  const info=await sharp(scene).resize({width:640}).webp({quality:80,effort:6}).toFile(fileURLToPath(destination));
+  manifest.previews[id]={file:id+'.webp',bytes:info.size,width:info.width,height:info.height,sourceHash:createHash('sha256').update(scene).digest('hex')};
+  continue;
+ }
  let xml=original.includes('xmlns=')?original:original.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" font-family="Zen Maru Gothic" font-weight="700" ');
  for(const match of [...xml.matchAll(/<image href="([^"]+)"/g)]){
   const href=match[1];if(!href.startsWith('./assets/'))throw Error('Unexpected thumbnail image: '+href);

@@ -23,7 +23,7 @@ test('offline shell contains real small previews and all local module dependenci
  for(const url of stored){
   const file=new URL(url==='./'?'index.html':url,dist);total+=(await stat(file)).size;
   if(url.endsWith('.js'))for(const match of (await readFile(file,'utf8')).matchAll(/from\s+['"](\.\/[^'"]+)['"]/g))assert.ok(stored.has(match[1]),'Missing offline module '+match[1]);
-  if(url.endsWith('.webp')){const bytes=await readFile(file);assert.equal(bytes.toString('ascii',0,4),'RIFF');assert.equal(bytes.toString('ascii',8,12),'WEBP')}
+  if(url.split('?')[0].endsWith('.webp')){const bytes=await readFile(file);assert.equal(bytes.toString('ascii',0,4),'RIFF');assert.equal(bytes.toString('ascii',8,12),'WEBP')}
  }
  assert.ok(total<1024*1024,'Do not put full play images back into the initial shell');
 });

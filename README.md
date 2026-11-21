@@ -145,7 +145,7 @@ npm test
 
 基準の「にわとりとひよこ」は795区画、207移動、分岐33か所。通路幅も同じ18pxです。
 
-追加5作品は絵・床・壁を同じ生成データから1800×1200のWebPへまとめ、プレイ中は画像1枚と軌跡・先端だけを描画します。形状と固定seedは dist/adventure-mazes.js、絵の原本は dist/adventure-artworks.js。一覧は別の640pxサムネイルです。
+追加5作品は絵・床・壁を1800×1200のWebPへまとめ、プレイ中は画像1枚と軌跡・先端だけを描画します。形状と固定seedは dist/adventure-mazes.js、絵本調の原本PNGと生成プロンプトは art-direction/painted-sources/。元の迷路グラフから正確な不透明の床と壁を重ね、画像生成による通路変更を防ぎます。一覧は別の640pxサムネイルです。旧ベクター案は dist/adventure-artworks.js に制作記録として残しています。
 
 画像を再生成する場合のみ `npm ci`、`npm run build:adventures`、`npm run build:previews` の順で実行します。壁のハッシュをテストし、画像だけ古い状態を検出します。通常の配信とテストに画像処理ライブラリは不要です。
 

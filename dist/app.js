@@ -1,5 +1,5 @@
 import {attachBoardControls,stepZoom} from './board-controls.js';
-import {works} from './works.js';
+import {works,artURL} from './works.js';
 import {wallPath,tilePaths,createTraceRenderer} from './render-paths.js';
 import {createUpdateGate} from './app-updates.js';
 import {createCelebration} from './celebration.js';
@@ -46,8 +46,8 @@ function buildArtwork(w){
  scene=svg;svg.setAttribute('viewBox',w.wide?'0 0 1200 800':'0 0 760 650');
  if(w.baked){
   svg.replaceChildren();
-  const image=make('image',{href:`./assets/previews/${w.id}.webp`,x:0,y:0,width:1200,height:800});
-  const full=new Image();full.src=`./assets/scenes/${w.id}.webp`;
+  const image=make('image',{href:artURL(w,'previews'),x:0,y:0,width:1200,height:800});
+  const full=new Image();full.decoding='async';full.src=artURL(w,'scenes');
   full.decode().then(()=>{if(svg.contains(image))image.setAttribute('href',full.src)}).catch(()=>{});
  }
  else if(w.id==='snail')drawSnail(svg,make,draw);
@@ -72,7 +72,7 @@ function selectWork(id,{remember=true,writeHistory=true}={}){
  $('#maze-title').textContent=work.title||`${work.name}の めいろ`;
  document.title=`イラストめいろ｜${work.name}`;svg.setAttribute('aria-label',`${work.name}の迷路。スタートからゴールまで、道をなぞって進みます。1本指でなぞり、拡大・移動は画面下のボタンで操作できます。Enterで開始し、矢印キーで進めます。`);
  if(writeHistory)history.replaceState(null,'',`#${work.id}`);
- $('#success-number').textContent=String(works.indexOf(work)+1).padStart(2,'0');$('#success-work').textContent=work.name;$('#success-art').src=`./assets/previews/${work.id}.webp`;
+ $('#success-number').textContent=String(works.indexOf(work)+1).padStart(2,'0');$('#success-work').textContent=work.name;$('#success-art').src=artURL(work,'previews');
  const saved=sessions.get(work.id);if(saved){({points,current,currentCell,started,complete}=saved);traceHistory=new TraceHistory(points);active=false;painter.flush();$('#instruction').textContent=complete?'やったね！ ゴールに ついたよ！':started?'いろの ついた さきから つづけよう！':work.intro||'スタートから ゆびで なぞってみよう！'}else reset();
  navigation?.clear();setZoom(1);const board=$('.board');if(work.grid&&!work.orientation&&board.clientHeight>board.clientWidth*1.25)setZoom(Math.round(board.clientHeight*(work.wide?1.5:760/650)/baseWidth));badges();
 }
@@ -106,7 +106,7 @@ function showHome(){
  controls.clear();navigation.clear();painter.clear();active=false;$('#play').hidden=true;svg.replaceChildren();maze=null;trail=null;tip=null;scene=svg;$('#home').hidden=false;document.body.classList.remove('playing');document.title='イラストめいろ';badges();window.scrollTo(0,homeScroll);applyUpdate();
 }
 function route(){if($('#success-dialog').open)$('#success-dialog').close();const id=location.hash.slice(1);if(works.some(w=>w.id===id)){selectWork(id,{writeHistory:false});svg.focus({preventScroll:true})}else showHome()}
-$('#collection-grid').innerHTML=works.map((w,i)=>`<button id="${w.id}-card" class="maze-card" aria-label="${w.name} あそぶ"><span class="card-heading"><span class="card-number">${String(i+1).padStart(2,'0')}</span><strong>${w.name}</strong><span class="card-cleared" hidden>クリア</span></span><img class="card-preview" src="./assets/previews/${w.id}.webp" width="640" height="548" alt="" aria-hidden="true" loading="${i<3?'eager':'lazy'}" decoding="async"><span class="card-action">あそぶ</span></button>`).join('');
+$('#collection-grid').innerHTML=works.map((w,i)=>`<button id="${w.id}-card" class="maze-card" aria-label="${w.name} あそぶ"><span class="card-heading"><span class="card-number">${String(i+1).padStart(2,'0')}</span><strong>${w.name}</strong><span class="card-cleared" hidden>クリア</span></span><img class="card-preview" src="${artURL(w,'previews')}" width="640" height="548" alt="" aria-hidden="true" loading="${i<3?'eager':'lazy'}" decoding="async"><span class="card-action">あそぶ</span></button>`).join('');
 $('#reset').onclick=reset;
 for(const w of works)$(`#${w.id}-card`).onclick=()=>{homeScroll=window.scrollY;playOrientation.enter(w.orientation);location.hash=w.id};
 $('#next-work').onclick=()=>{$('#success-dialog').close();const next=works[(works.indexOf(work)+1)%works.length];playOrientation.enter(next.orientation);location.hash=next.id};

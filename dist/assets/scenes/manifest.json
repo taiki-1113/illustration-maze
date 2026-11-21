@@ -4,39 +4,69 @@
     "cells": 873,
     "moves": 206,
     "forks": 35,
-    "bytes": 62264,
-    "geometry": "a94c18f5eb3e8773c61709634f5e8cbed44ca0c4d50df21fde241e305d605a32"
+    "bytes": 235042,
+    "width": 1800,
+    "height": 1200,
+    "geometry": "a94c18f5eb3e8773c61709634f5e8cbed44ca0c4d50df21fde241e305d605a32",
+    "art": "f98d4509ac0b4ab986bece6c3ccb183d4aa0d0187d7c8a6257df829f37ff3a4f",
+    "scene": "a975e8bc22af85cd1dbed83db1b41903130c7efd89e1c77f84e268211687287c",
+    "overlay": "871c2756a8a900a7a7bd819781c56e191a1b2df3ef4930274d081d4d1b0a64cd",
+    "paintedSource": "treehouse.png"
   },
   "dinosaurs": {
     "seed": 143,
     "cells": 805,
     "moves": 210,
     "forks": 33,
-    "bytes": 58474,
-    "geometry": "27011574d9eb61fd0b07682f5a082ad6b9201cfcfdece5e424f9e04916e9d05e"
+    "bytes": 251674,
+    "width": 1800,
+    "height": 1200,
+    "geometry": "27011574d9eb61fd0b07682f5a082ad6b9201cfcfdece5e424f9e04916e9d05e",
+    "art": "a08efeea67087e3783d0f0c83aa349dfeb6f661a1e965ae9d1221aec8dbc4668",
+    "scene": "5efa9bf1674068612ceeb53d4bb27dc267ba859f4768a9c63cd88a06efe99caa",
+    "overlay": "743eea371283af301acbbb611a0accb7ba6ea8ff432f9b24c1f69e1e273ebe89",
+    "paintedSource": "dinosaurs.png"
   },
   "castle": {
     "seed": 136,
     "cells": 782,
     "moves": 204,
     "forks": 33,
-    "bytes": 50732,
-    "geometry": "029337d4fc1c0e92da516dbd7d9bc71c78b51f408c102c23e9a49c77f75f58c1"
+    "bytes": 244824,
+    "width": 1800,
+    "height": 1200,
+    "geometry": "029337d4fc1c0e92da516dbd7d9bc71c78b51f408c102c23e9a49c77f75f58c1",
+    "art": "c012f5e7ef922df49a9b74cd26e807720d0d084cb785488bfe9153c532f3d014",
+    "scene": "a1ca8cb7713cb745de972f56a9da6a284cd04b60fccf47dcd4b7f02aaaefafb9",
+    "overlay": "e2cecf07c8ddbdb7592cdc32995ccf7f2d5b62e0b5084bd4a9ac6f29ec606840",
+    "paintedSource": "castle.png"
   },
   "harbor": {
     "seed": 34,
     "cells": 790,
     "moves": 210,
     "forks": 33,
-    "bytes": 62808,
-    "geometry": "e6ceabca0f7ae9976463b3554d287fb6cadf1816a941fa6a2623168841722151"
+    "bytes": 212752,
+    "width": 1800,
+    "height": 1200,
+    "geometry": "e6ceabca0f7ae9976463b3554d287fb6cadf1816a941fa6a2623168841722151",
+    "art": "1d6e5829fff057c208f455bf1781e36163cbe7e7026b0029d487fd562b2fa19d",
+    "scene": "4f63bf4c4c51834fc7e5ce281f8d44d922b59e7d4d1b5c7133f30a558a17f702",
+    "overlay": "da76a32325bc6e2745987518b454bab5586e2727985777d2a8feb12c89266a94",
+    "paintedSource": "harbor.png"
   },
   "snow": {
     "seed": 98,
     "cells": 759,
     "moves": 205,
     "forks": 33,
-    "bytes": 61474,
-    "geometry": "8c4b7f1b08e6000ff2d6dc68de3428b04ce09b57f6a52f621b7ee4bfda824835"
+    "bytes": 228240,
+    "width": 1800,
+    "height": 1200,
+    "geometry": "8c4b7f1b08e6000ff2d6dc68de3428b04ce09b57f6a52f621b7ee4bfda824835",
+    "art": "9298753a8e22fabe22a8446baa290c43776fb242a447bd17d35a621f4bad48c8",
+    "scene": "058eb67de7bb411f6f643c55fb261d39d647a63fc7c4ec0f98338891deecffb1",
+    "overlay": "02d40320f71a542f44659978f8014c7fd599bc02b9010ffb47b84c9b117aef8d",
+    "paintedSource": "snow.png"
   }
 }
