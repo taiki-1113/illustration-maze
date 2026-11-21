@@ -1,7 +1,7 @@
-const CACHE='illustration-maze-v19';
+const CACHE='illustration-maze-v20';
 const PAINTED=['treehouse','dinosaurs','castle','harbor','snow'];
 const PREVIEWS=['snail','turtle','fish','owl','rocket','family','garden','sea','picnic','space','treehouse','dinosaurs','castle','harbor','snow'].map(id=>'./assets/previews/'+id+'.webp'+(PAINTED.includes(id)?'?art=gouache-1':''));
-const FILES=['./','./index.html','./style.css','./app.js','./works.js','./adventure-mazes.js','./board-controls.js','./render-paths.js','./app-updates.js','./celebration.js','./play-orientation.js','./collision-index.js','./trace-history.js','./board-navigation.js','./maze.js','./fish-maze.js','./artworks.js','./assets/home-rocket.webp','./assets/paper-grain.svg','./icon.svg','./manifest.webmanifest',...PREVIEWS];
+const FILES=['./','./index.html','./style.css','./app.js','./works.js','./adventure-mazes.js','./board-controls.js','./render-paths.js','./app-updates.js','./celebration.js','./fireworks.js','./play-orientation.js','./collision-index.js','./trace-history.js','./board-navigation.js','./maze.js','./fish-maze.js','./artworks.js','./assets/home-rocket.webp','./assets/paper-grain.svg','./icon.svg','./manifest.webmanifest',...PREVIEWS];
 const ART=['./assets/picnic-gouache.png','./assets/space-adventure.png',...PAINTED.map(id=>'./assets/scenes/'+id+'.webp?art=gouache-1')];
 let warming;
 function warmArt(){
