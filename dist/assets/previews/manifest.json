@@ -70,6 +70,41 @@
       "width": 640,
       "height": 427,
       "sourceHash": "730010eb2fabc448aab5be96d2b3bd828280b9124c29e010fb55a6feb832a09c"
+    },
+    "treehouse": {
+      "file": "treehouse.webp",
+      "bytes": 21400,
+      "width": 640,
+      "height": 427,
+      "sourceHash": "9ac0ed4efc027f4142014557b40b0c0375600a079f3d25f155fa90e3c64c0880"
+    },
+    "dinosaurs": {
+      "file": "dinosaurs.webp",
+      "bytes": 20082,
+      "width": 640,
+      "height": 427,
+      "sourceHash": "730074f61049d28720b29bacd6996a5dbcae6cbe35ebacafa3c9254ed54a62c2"
+    },
+    "castle": {
+      "file": "castle.webp",
+      "bytes": 17242,
+      "width": 640,
+      "height": 427,
+      "sourceHash": "1f08fb91ade180a9d30687c784cf59feb30fff7ea18f1408b50683c91f765c6a"
+    },
+    "harbor": {
+      "file": "harbor.webp",
+      "bytes": 21696,
+      "width": 640,
+      "height": 427,
+      "sourceHash": "3ddc619a388203effea118f3cbca32d112a0c933e1f7bc2aae13d7c87e89c7c3"
+    },
+    "snow": {
+      "file": "snow.webp",
+      "bytes": 20956,
+      "width": 640,
+      "height": 427,
+      "sourceHash": "7596962fb5fc6b79e7d63b606ace7cead1698535c6f2e73c286392aee6f5e3b7"
     }
   }
 }

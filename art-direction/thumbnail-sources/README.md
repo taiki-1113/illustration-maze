@@ -2,6 +2,8 @@
 
 完成済み10作品の一覧SVGを、変更前の実画面DOMから保存した固定スナップショットです。プレイ中のSVGや当たり判定には使用しません。サムネイル用に迷路を生成・複製する処理を利用端末で走らせないための制作時入力です。
 
+追加のtreehouse/dinosaurs/castle/harbor/snowは、`npm run build:adventures` で絵と判定用グラフから同時生成する原本です。この5作品はプレイ用1800px WebPにも同じSVGを使用。再生成順は `npm run build:adventures` → `npm run build:previews`。元の10作品の固定スナップショットは維持します。
+
 - 再生成: `npm ci` → `npm run build:previews`
 - 出力: `dist/assets/previews/*.webp`（幅640px）、`dist/assets/home-rocket.webp`（幅600px）
 - 元の挿絵PNG、SVGの形・座標・プレイ用の高解像度画像は維持しています。

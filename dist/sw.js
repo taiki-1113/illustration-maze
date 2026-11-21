@@ -1,7 +1,7 @@
-const CACHE='illustration-maze-v17';
-const PREVIEWS=['snail','turtle','fish','owl','rocket','family','garden','sea','picnic','space'].map(id=>'./assets/previews/'+id+'.webp');
-const FILES=['./','./index.html','./style.css','./app.js','./render-paths.js','./app-updates.js','./celebration.js','./play-orientation.js','./collision-index.js','./trace-history.js','./board-navigation.js','./maze.js','./fish-maze.js','./artworks.js','./assets/home-rocket.webp','./assets/paper-grain.svg','./icon.svg','./manifest.webmanifest',...PREVIEWS];
-const ART=['./assets/picnic-gouache.png','./assets/space-adventure.png'];
+const CACHE='illustration-maze-v18';
+const PREVIEWS=['snail','turtle','fish','owl','rocket','family','garden','sea','picnic','space','treehouse','dinosaurs','castle','harbor','snow'].map(id=>'./assets/previews/'+id+'.webp');
+const FILES=['./','./index.html','./style.css','./app.js','./works.js','./adventure-mazes.js','./board-controls.js','./render-paths.js','./app-updates.js','./celebration.js','./play-orientation.js','./collision-index.js','./trace-history.js','./board-navigation.js','./maze.js','./fish-maze.js','./artworks.js','./assets/home-rocket.webp','./assets/paper-grain.svg','./icon.svg','./manifest.webmanifest',...PREVIEWS];
+const ART=['./assets/picnic-gouache.png','./assets/space-adventure.png',...['treehouse','dinosaurs','castle','harbor','snow'].map(id=>'./assets/scenes/'+id+'.webp')];
 let warming;
 function warmArt(){
  if(!warming)warming=(async()=>{const cache=await caches.open(CACHE);for(const file of ART){try{if(!await cache.match(file))await cache.add(file)}catch{}}})().finally(()=>{warming=null});

@@ -1,4 +1,5 @@
 import {clearOfWalls} from './collision-index.js';
+import {ADVENTURE_SHAPES} from './adventure-mazes.js';
 
 export const CELL=18, ORIGIN={x:100,y:100};
 const WIDTH=33,HEIGHT=25;
@@ -34,6 +35,7 @@ export const SPACE_BODIES=[[283,409,118,116],[702,239,168,95],[965,490,80,80]];
 function spaceContains(x,y){return (SPACE_ORBITS.some(e=>ellipseContains(x,y,e))||inPolygon(x,y,[[423,330],[565,310],[570,387],[450,420]])||inPolygon(x,y,[[775,350],[865,350],[930,440],[860,510],[790,430]]))&&!SPACE_BODIES.some(e=>ellipseContains(x,y,e))&&!(x>1108&&y>=460&&y<=500)}
 export function fishCenter(c){return {x:ORIGIN.x+(c.col+.5)*CELL,y:ORIGIN.y+(c.row+.5)*CELL}}
 const SHAPES={
+ ...ADVENTURE_SHAPES,
  fish:{contains:(x,y)=>((x-335)/224)**2+((y-320)/160)**2<=1||inPolygon(x,y,tail),startY:320,goalY:400},
  owl:{contains:(x,y)=>((x-380)/205)**2+((y-370)/178)**2<=1||inPolygon(x,y,[[210,295],[145,435],[240,483]])||inPolygon(x,y,[[550,295],[615,435],[520,483]]),startY:385,goalY:430},
  rocket:{contains:(x,y)=>(x>=220&&x<=540&&y>=205&&y<=490)||inPolygon(x,y,[[220,205],[380,158],[540,205]])||inPolygon(x,y,[[235,330],[130,510],[240,470]])||inPolygon(x,y,[[525,330],[630,510],[520,470]]),startY:450,goalY:450},

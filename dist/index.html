@@ -2,10 +2,10 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="app-version" content="20261119.2">
+<meta name="app-version" content="20261121.1">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f8f0dc">
-<meta name="description" content="ゆびやマウスでなぞって遊ぶ、10作品のイラスト迷路。">
+<meta name="description" content="ゆびやマウスでなぞって遊ぶ、15作品のイラスト迷路。">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="./style.css">
@@ -16,7 +16,7 @@
 <header class="home-header"><h1>イラストめいろ</h1></header>
 <section class="collection" aria-labelledby="collection-title">
 <div class="collection-intro">
-<div class="collection-heading"><h2 id="collection-title">めいろ一覧</h2><p id="collection-progress">0 / 10 クリア</p></div>
+<div class="collection-heading"><h2 id="collection-title">めいろ一覧</h2><p id="collection-progress">0 / 15 クリア</p></div>
 <img class="home-rocket" src="./assets/home-rocket.webp" alt="" width="300" height="180" decoding="async">
 </div>
 <div id="collection-grid" class="collection-grid"></div>
@@ -26,7 +26,18 @@
 <section id="play" class="play" aria-labelledby="maze-title" hidden>
 <header class="play-header"><a id="collection" href="#home">一覧にもどる</a><h1 id="maze-title"></h1></header>
 <div class="stage"><div class="board" id="board"><svg id="maze" viewBox="0 0 760 650" aria-label="迷路" aria-describedby="instruction"></svg></div></div>
-<div class="play-controls">
+<div class="play-controls" aria-label="表示の操作">
+<div class="zoom-controls" role="group" aria-label="拡大と縮小">
+<button class="view-button" data-zoom="-1" aria-label="縮小">−</button>
+<button class="view-button fit-button" data-zoom="fit" aria-label="全体を表示">全体</button>
+<button class="view-button" data-zoom="1" aria-label="拡大">＋</button>
+</div>
+<div class="pan-controls" role="group" aria-label="表示の移動">
+<button class="view-button" data-pan="left" aria-label="表示を左へ">←</button>
+<button class="view-button" data-pan="up" aria-label="表示を上へ">↑</button>
+<button class="view-button" data-pan="down" aria-label="表示を下へ">↓</button>
+<button class="view-button" data-pan="right" aria-label="表示を右へ">→</button>
+</div>
 <p id="orientation-note" class="orientation-note" role="status" hidden></p>
 <button id="reset" class="reset-button">やりなおす</button>
 </div>

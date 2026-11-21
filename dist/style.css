@@ -32,6 +32,21 @@ body.playing{overflow:hidden}.play{height:100vh;height:100dvh;display:flex;flex-
 .board::-webkit-scrollbar{display:none}
 .board:not(.magnified){overflow:hidden}#maze{display:block;margin:auto;flex-shrink:0;height:auto;max-width:none;touch-action:none;user-select:none;outline-offset:-3px}
 .board.gesturing{cursor:grabbing}
+/* Controls occupy their own short row, never the playable surface. */
+.play-controls{justify-content:center;gap:14px;min-height:54px;padding:4px 5px 6px;touch-action:manipulation}
+.zoom-controls,.pan-controls{display:flex;gap:5px}
+.view-button{display:grid;place-items:center;width:44px;height:44px;padding:0;border:1px solid #6f644d;border-radius:4px;background:#fcf5e4;box-shadow:0 2px 0 #b7a278;font-size:24px;font-weight:700;line-height:1;touch-action:none;user-select:none}
+.view-button.fit-button{font-size:12px}
+.view-button:disabled{opacity:.32;cursor:default;box-shadow:none;transform:none}
+.view-button:not(:disabled):hover{background:#e9e6d2}
+.play-controls .reset-button{margin-left:auto;min-height:44px}
+.zoom-controls{margin-left:auto}
+.play-controls .orientation-note{margin:0;max-width:75px;font-size:10px}
+.board{contain:paint;overflow-anchor:none;scroll-behavior:auto}
+#maze{will-change:auto}
+.play[data-work=space] .view-button{background:#101f36;border-color:#b39c72;color:#ecd9b5;box-shadow:0 2px 0 #695b43}
+@media(max-width:600px){.play-controls{gap:8px;padding-inline:0}.zoom-controls,.pan-controls{gap:3px}.view-button{width:40px;height:44px}.play-controls .reset-button{font-size:11px;padding-inline:6px}.play-controls .orientation-note{display:none}}
+@media(max-height:500px){.play-controls{min-height:48px;padding-block:2px}.view-button,.play-controls .reset-button{height:40px;min-height:40px}}
 /* Pointer capture belongs to the board; decorative paths need no hit testing. */
 #maze{pointer-events:none}
 .play-controls{display:flex;align-items:center;justify-content:flex-end;gap:14px;min-height:42px;flex-shrink:0;padding:2px 4px 5px}

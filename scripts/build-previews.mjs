@@ -4,12 +4,12 @@ import {createHash} from 'node:crypto';
 import {Resvg} from '@resvg/resvg-js';
 import sharp from 'sharp';
 const sources=new URL('../art-direction/thumbnail-sources/',import.meta.url),dist=new URL('../dist/',import.meta.url),output=new URL('assets/previews/',dist);
-const ids=['snail','turtle','fish','owl','rocket','family','garden','sea','picnic','space'];
+const ids=['snail','turtle','fish','owl','rocket','family','garden','sea','picnic','space','treehouse','dinosaurs','castle','harbor','snow'];
 await mkdir(output,{recursive:true});
 const manifest={width:640,previews:{}};
 for(const id of ids){
  const original=await readFile(new URL(id+'.svg',sources),'utf8');
- let xml=original.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" font-family="Zen Maru Gothic" font-weight="700" ');
+ let xml=original.includes('xmlns=')?original:original.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" font-family="Zen Maru Gothic" font-weight="700" ');
  for(const match of [...xml.matchAll(/<image href="([^"]+)"/g)]){
   const href=match[1];if(!href.startsWith('./assets/'))throw Error('Unexpected thumbnail image: '+href);
   const image=await readFile(new URL(href,dist));xml=xml.replace('href="'+href+'"','xlink:href="data:image/png;base64,'+image.toString('base64')+'"');

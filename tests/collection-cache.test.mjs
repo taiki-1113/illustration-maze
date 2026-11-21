@@ -17,7 +17,7 @@ function worker({failArt=false}={}){
 }
 test('offline shell contains real small previews and all local module dependencies',async()=>{
  const {fire,stored}=worker();await fire('install');
- assert.equal([...stored].filter(url=>url.includes('/previews/')).length,10);
+ assert.equal([...stored].filter(url=>url.includes('/previews/')).length,15);
  assert.ok(![...stored].some(url=>url.endsWith('space-adventure.png')||url.endsWith('picnic-gouache.png')));
  let total=0;
  for(const url of stored){
@@ -29,14 +29,14 @@ test('offline shell contains real small previews and all local module dependenci
 });
 test('full artwork is cached on the idle message and is not downloaded twice',async()=>{
  const {fire,stored,downloads}=worker();await fire('install');assert.equal(downloads.length,0);
- await fire('message',{type:'warm-art'});assert.equal(downloads.length,2);
+ await fire('message',{type:'warm-art'});assert.equal(downloads.length,7);
  assert.ok(stored.has('./assets/space-adventure.png'));assert.ok(stored.has('./assets/picnic-gouache.png'));
- await fire('message',{type:'warm-art'});assert.equal(downloads.length,2);
+ await fire('message',{type:'warm-art'});assert.equal(downloads.length,7);
 });
 test('offline artwork failure does not break the shell or other artwork',async()=>{
  const {fire,stored,downloads}=worker({failArt:true});
  await fire('install');await fire('activate');await fire('message',{type:'warm-art'});
- assert.ok(stored.has('./assets/previews/picnic.webp'));assert.ok(stored.has('./assets/space-adventure.png'));assert.equal(downloads.length,2);
+ assert.ok(stored.has('./assets/previews/picnic.webp'));assert.ok(stored.has('./assets/space-adventure.png'));assert.equal(downloads.length,7);
 });
 test('updating the maze cache leaves other applications alone',async()=>{
  const {fire,deleted}=worker();await fire('activate');

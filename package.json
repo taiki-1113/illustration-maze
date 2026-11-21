@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node server.mjs",
     "test": "node --test tests/*.test.mjs",
+    "build:adventures": "node scripts/build-adventures.mjs",
     "build:previews": "node scripts/build-previews.mjs"
   },
   "devDependencies": {
